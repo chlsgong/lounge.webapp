@@ -4,6 +4,7 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       token: "",
       deviceId: "",
@@ -49,6 +50,7 @@ class App extends Component {
   }
 
   createEventHandlers() {
+    // Error handlers
     this.player.on('initialization_error', e => { console.error(e); });
     this.player.on('authentication_error', e => {
       console.error(e);
@@ -58,14 +60,75 @@ class App extends Component {
     this.player.on('playback_error', e => { console.error(e); });
   
     // Playback status updates
-    this.player.on('player_state_changed', state => { console.log(state); });
+    this.player.on('player_state_changed', state => {
+      console.log(state);
+
+      this.onStateChanged(state);
+    });
   
     // Ready
     this.player.on('ready', data => {
-      const { device_id } = data;
       console.log("Let the music play on!");
-      this.setState({ deviceId: device_id });
+      
+      const { device_id } = data;
+
+      this.setState({ deviceId: device_id }, this.transferPlaybackHere);
     });
+  }
+
+  onStateChanged(state) {
+    // if we're no longer listening to music, we'll get a null state.
+    if (state !== null) {
+      const {
+        current_track: currentTrack,
+        position,
+        duration,
+      } = state.track_window;
+      
+      const trackName = currentTrack.name;
+      const albumName = currentTrack.album.name;
+      const artistName = currentTrack.artists
+        .map(artist => artist.name)
+        .join(", ");
+      const playing = !state.paused;
+      
+      this.setState({
+        position,
+        duration,
+        trackName,
+        albumName,
+        artistName,
+        playing
+      });
+    }
+  }
+
+  transferPlaybackHere() {
+    const { deviceId, token } = this.state;
+
+    fetch("https://api.spotify.com/v1/me/player", {
+      method: "PUT",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "device_ids": [ deviceId ],
+        "play": true,
+      }),
+    });
+  }
+
+  onPrevClick() {
+    this.player.previousTrack();
+  }
+  
+  onPlayClick() {
+    this.player.togglePlay();
+  }
+  
+  onNextClick() {
+    this.player.nextTrack();
   }
 
   render() {
@@ -95,6 +158,11 @@ class App extends Component {
           <p>Artist: {artistName}</p>
           <p>Track: {trackName}</p>
           <p>Album: {albumName}</p>
+          <p>
+            <button onClick={() => this.onPrevClick()}>Previous</button>
+            <button onClick={() => this.onPlayClick()}>{playing ? "Pause" : "Play"}</button>
+            <button onClick={() => this.onNextClick()}>Next</button>
+          </p>
         </div>)
         :
         (<div>
