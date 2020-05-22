@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import JoinView from './JoinView';
+import { createSocketHandlers } from './socket';
 
+import JoinView from './JoinView';
 import './App.css';
 
 class App extends Component {
@@ -134,11 +135,10 @@ class App extends Component {
     });
   }
 
-  onAddToQueue() {
+  onAddToQueue(trackURI) {
     const { deviceId, token } = this.state;
-    const testURI = "spotify:track:55jJiuvjDJ3opwgVI6SlVa";
 
-    fetch(`https://api.spotify.com/v1/me/player/queue?uri=${testURI}&device_id=${deviceId}`, {
+    fetch(`https://api.spotify.com/v1/me/player/queue?uri=${trackURI}&device_id=${deviceId}`, {
       method: "POST",
       headers: {
         authorization: `Bearer ${token}`,
@@ -163,6 +163,14 @@ class App extends Component {
     this.setState({
       isSelecting: false,
       isCreatingLounge: true
+    }, () => {
+      this.socket = createSocketHandlers();
+      this.socket.on('add-to-queue', data => {
+        console.log('track received', data);
+
+        this.onAddToQueue(data.trackURI);
+      });
+      this.socket.emit('create-lounge');
     });
   }
 

@@ -7,6 +7,7 @@ import './JoinView.css';
 class JoinView extends PureComponent {
   componentDidMount() {
     this.socket = createSocketHandlers();
+    this.socket.emit('join-lounge');
   }
 
   onAddToQueue() {
