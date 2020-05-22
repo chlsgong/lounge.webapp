@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
+
+import JoinView from './JoinView';
+
 import './App.css';
 
 class App extends Component {
@@ -13,9 +17,13 @@ class App extends Component {
       trackName: "Track Name",
       artistName: "Artist Name",
       albumName: "Album Name",
+      albumImage: '',
       playing: false,
       position: 0,
       duration: 0,
+      isSelecting: true,
+      isCreatingLounge: false,
+      isJoiningLounge: false,
     };
 
     this.playerCheckInterval = null;
@@ -85,12 +93,18 @@ class App extends Component {
         duration,
       } = state.track_window;
       
+      // get track info
       const trackName = currentTrack.name;
       const albumName = currentTrack.album.name;
       const artistName = currentTrack.artists
         .map(artist => artist.name)
         .join(", ");
+
+      // get track state
       const playing = !state.paused;
+
+      // get album cover
+      const albumImage = _.first(currentTrack?.album?.images)?.url;
       
       this.setState({
         position,
@@ -98,6 +112,7 @@ class App extends Component {
         trackName,
         albumName,
         artistName,
+        albumImage,
         playing
       });
     }
@@ -114,8 +129,21 @@ class App extends Component {
       },
       body: JSON.stringify({
         "device_ids": [ deviceId ],
-        "play": true,
+        "play": false, // TODO: change this back to 'true'
       }),
+    });
+  }
+
+  onAddToQueue() {
+    const { deviceId, token } = this.state;
+    const testURI = "spotify:track:55jJiuvjDJ3opwgVI6SlVa";
+
+    fetch(`https://api.spotify.com/v1/me/player/queue?uri=${testURI}&device_id=${deviceId}`, {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
     });
   }
 
@@ -131,6 +159,31 @@ class App extends Component {
     this.player.nextTrack();
   }
 
+  onCreateLounge = () => {
+    this.setState({
+      isSelecting: false,
+      isCreatingLounge: true
+    });
+  }
+
+  onJoinLounge = () => {
+    this.setState({
+      isSelecting: false,
+      isJoiningLounge: true
+    });
+  }
+
+  renderSelectionView = () => {
+    return (
+      <div className="App">
+        <p>
+          <button onClick={this.onCreateLounge}>Create a lounge</button>
+          <button onClick={this.onJoinLounge}>Join a lounge</button>
+        </p>
+      </div>
+    );
+  }
+
   render() {
     const {
       token,
@@ -138,50 +191,63 @@ class App extends Component {
       artistName,
       trackName,
       albumName,
+      albumImage,
       error,
       position,
       duration,
       playing,
     } = this.state;
   
-    return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Now Playing</h2>
-          <p>A Spotify Web Playback API Demo.</p>
+    if (this.state.isSelecting) {
+      return this.renderSelectionView();
+    }
+    else if (this.state.isCreatingLounge) {
+      return (
+        <div className="App">
+          <div className="App-header">
+            <h2>Now Playing</h2>
+            <p>A Spotify Web Playback API Demo.</p>
+          </div>
+    
+          {error && <p>Error: {error}</p>}
+    
+          {loggedIn ?
+          (<div>
+            <p>Artist: {artistName}</p>
+            <p>Track: {trackName}</p>
+            <p>Album: {albumName}</p>
+            <img src={albumImage} alt={"Album cover not found"} />
+            <p>
+              <button onClick={() => this.onPrevClick()}>Previous</button>
+              <button onClick={() => this.onPlayClick()}>{playing ? "Pause" : "Play"}</button>
+              <button onClick={() => this.onNextClick()}>Next</button>
+              {/* <button onClick={() => this.onAddToQueue()}>Add To Queue</button> */}
+            </p>
+          </div>)
+          :
+          (<div>
+            <p className="App-intro">
+              Enter your Spotify access token. Get it from{" "}
+              <a href="https://beta.developer.spotify.com/documentation/web-playback-sdk/quick-start/#authenticating-with-spotify">
+                here
+              </a>.
+            </p>
+            <p>
+              <input type="text" value={token} onChange={e => this.setState({ token: e.target.value })} />
+            </p>
+            <p>
+              <button onClick={() => this.handleLogin()}>Go</button>
+            </p>
+          </div>)
+          }
         </div>
-  
-        {error && <p>Error: {error}</p>}
-  
-        {loggedIn ?
-        (<div>
-          <p>Artist: {artistName}</p>
-          <p>Track: {trackName}</p>
-          <p>Album: {albumName}</p>
-          <p>
-            <button onClick={() => this.onPrevClick()}>Previous</button>
-            <button onClick={() => this.onPlayClick()}>{playing ? "Pause" : "Play"}</button>
-            <button onClick={() => this.onNextClick()}>Next</button>
-          </p>
-        </div>)
-        :
-        (<div>
-          <p className="App-intro">
-            Enter your Spotify access token. Get it from{" "}
-            <a href="https://beta.developer.spotify.com/documentation/web-playback-sdk/quick-start/#authenticating-with-spotify">
-              here
-            </a>.
-          </p>
-          <p>
-            <input type="text" value={token} onChange={e => this.setState({ token: e.target.value })} />
-          </p>
-          <p>
-            <button onClick={() => this.handleLogin()}>Go</button>
-          </p>
-        </div>)
-        }
-      </div>
-    );
+      );
+    }
+    else {
+      return (
+        <JoinView />
+      );
+    }
   }
 }
 
