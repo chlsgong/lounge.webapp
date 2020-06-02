@@ -17,3 +17,9 @@
 .JoinView-intro {
   font-size: large;
 }
+
+ol {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}

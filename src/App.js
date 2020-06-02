@@ -49,9 +49,13 @@ class App extends Component {
     }
   }
 
-  handleLogin() {
+  onLogin() {
     if (this.state.token !== "") {
       this.setState({ loggedIn: true });
+
+      if (this.socket) {
+        this.socket.emit('create-lounge', { token: this.state.token });
+      }
 
       // check every second for the player.
     this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
@@ -170,7 +174,6 @@ class App extends Component {
 
         this.onAddToQueue(data.trackURI);
       });
-      this.socket.emit('create-lounge');
     });
   }
 
@@ -229,7 +232,6 @@ class App extends Component {
               <button onClick={() => this.onPrevClick()}>Previous</button>
               <button onClick={() => this.onPlayClick()}>{playing ? "Pause" : "Play"}</button>
               <button onClick={() => this.onNextClick()}>Next</button>
-              {/* <button onClick={() => this.onAddToQueue()}>Add To Queue</button> */}
             </p>
           </div>)
           :
@@ -244,7 +246,7 @@ class App extends Component {
               <input type="text" value={token} onChange={e => this.setState({ token: e.target.value })} />
             </p>
             <p>
-              <button onClick={() => this.handleLogin()}>Go</button>
+              <button onClick={() => this.onLogin()}>Go</button>
             </p>
           </div>)
           }
