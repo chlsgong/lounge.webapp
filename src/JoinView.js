@@ -12,6 +12,7 @@ class JoinView extends PureComponent {
       token: '',
       queryString: '',
       tracks: [],
+      selectedTrackName: '',
     };
   }
 
@@ -25,7 +26,9 @@ class JoinView extends PureComponent {
     this.socket.emit('join-lounge');
   }
 
-  onAddToQueue = (trackURI) => {
+  onAddToQueue = (trackURI, trackName) => {
+    this.setState({ selectedTrackName: trackName });
+
     this.socket.emit('add-to-queue', { trackURI });
   }
 
@@ -69,14 +72,14 @@ class JoinView extends PureComponent {
 
           const itemText = name.concat(' ', artistNames).trim();
 
-          return <li key={index}><a href="# " onClick={() => this.onAddToQueue(uri)}>{itemText}</a></li>;
+          return <li key={index}><a href="# " onClick={() => this.onAddToQueue(uri, name)}>{itemText}</a></li>;
         })}
       </ol>
     )
   }
 
   render() {
-    const { queryString } = this.state;
+    const { queryString, selectedTrackName } = this.state;
 
     return (
       <div className="JoinView">
@@ -90,6 +93,7 @@ class JoinView extends PureComponent {
             <p>
               <button disabled={!queryString} onClick={this.onSearch}>Search</button>
             </p>
+            {selectedTrackName ? <p>Song added: {selectedTrackName}</p> : null}
             {this.renderSearchResults()}
           </div>
         </div>

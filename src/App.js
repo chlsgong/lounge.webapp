@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import _ from 'lodash';
+import qs from 'qs';
 
 import { createSocketHandlers } from './socket';
 
 import JoinView from './JoinView';
 import './App.css';
 
-class App extends Component {
+class App extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      token: "",
+      auth: {},
       deviceId: "",
       loggedIn: false,
       error: "",
@@ -31,17 +32,15 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const hash = this.getURLHash();
-    console.log('url callback parameters', hash);
+    const { code, state } = this.getURLParams();
 
-    if (hash.state === 'thisisthecorrectapp12345678') {
-      // TODO: get access token
+    if (code && state === 'thisisthecorrectapp12345678') {
+      this.setState({ isSelecting: false, isCreatingLounge: true });
+      this.requestSpotifyTokenAPI(code);
     }
   }
 
-  checkForPlayer() {
-    const { token } = this.state;
-  
+  checkForPlayer({ access_token }) {  
     if (window.Spotify !== null) {
       // cancel the interval
       clearInterval(this.playerCheckInterval);
@@ -49,7 +48,7 @@ class App extends Component {
       // create the player
       this.player = new window.Spotify.Player({
         name: "Main Spotify Player",
-        getOAuthToken: callback => { callback(token); },
+        getOAuthToken: callback => { callback(access_token); },
       });
       this.createEventHandlers();
   
@@ -58,33 +57,62 @@ class App extends Component {
     }
   }
 
-  onLogin() {
-    if (this.state.token !== "") {
-      this.setState({ loggedIn: true });
+  login(auth) {
+    this.setState({ auth, loggedIn: true });
 
-      if (this.socket) {
-        this.socket.emit('create-lounge', { token: this.state.token });
-      }
+    // TODO: Store locally and redirect to log back in
 
-      // check every second for the player.
-    this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
+    this.socket = createSocketHandlers();
+    this.socket.on('add-to-queue', data => {
+      console.log('track received', data);
+
+      this.onAddToQueue(data.trackURI);
+    });
+
+    if (this.socket) {
+      this.socket.emit('create-lounge', { token: auth.access_token });
     }
+
+    this.playerCheckInterval = setInterval(() => this.checkForPlayer(auth), 1000);
   }
 
   getSpotifyAuthorizationAPI = () => {
     const authorizeAPI = 'https://accounts.spotify.com/authorize'
     const clientId = '?client_id=16efad44cfd54e3ea050d602af68eadd';
     const responseType = '&response_type=code';
-    const redirectURI = '&redirect_uri=http://localhost:3000/#';
+    const redirectURI = '&redirect_uri=http://localhost:3000';
     const state = '&state=thisisthecorrectapp12345678';
     const scope = `&scope=${["streaming", "user-read-email", "user-read-private"].join('%20')}`;
 
     return authorizeAPI + clientId + responseType + redirectURI + state + scope;
   }
 
-  getURLHash = () => {
+  requestSpotifyTokenAPI = (code) => {
+    return fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: qs.stringify({
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: 'http://localhost:3000',
+        client_id: '16efad44cfd54e3ea050d602af68eadd',
+        client_secret: '10f26b66944143449acf95adcc4074bb',
+      }),
+    })
+    .then(response => response.json())
+    .then(auth => {
+      console.log('success', auth);
+
+      this.login(auth);
+    })
+    .catch(error => {
+      console.log('error', error);
+    });
+  }
+
+  getURLParams = () => {
     // get the hash of the url
-    const hash = window.location.hash
+    const params = window.location.search
       .substring(1)
       .split("&")
       .reduce((initial, item) => {
@@ -95,10 +123,9 @@ class App extends Component {
         return initial;
       }, {});
 
-    // clear hash
-    window.location.hash = "";
+    console.log('url callback parameters', params);
 
-    return hash;
+    return params;
   }
 
   createEventHandlers() {
@@ -163,12 +190,12 @@ class App extends Component {
   }
 
   transferPlaybackHere() {
-    const { deviceId, token } = this.state;
+    const { deviceId, auth } = this.state;
 
     fetch("https://api.spotify.com/v1/me/player", {
       method: "PUT",
       headers: {
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${auth.access_token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -179,12 +206,12 @@ class App extends Component {
   }
 
   onAddToQueue(trackURI) {
-    const { deviceId, token } = this.state;
+    const { deviceId, auth } = this.state;
 
     fetch(`https://api.spotify.com/v1/me/player/queue?uri=${trackURI}&device_id=${deviceId}`, {
       method: "POST",
       headers: {
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${auth.access_token}`,
         "Content-Type": "application/json",
       },
     });
@@ -206,13 +233,6 @@ class App extends Component {
     this.setState({
       isSelecting: false,
       isCreatingLounge: true
-    }, () => {
-      this.socket = createSocketHandlers();
-      this.socket.on('add-to-queue', data => {
-        console.log('track received', data);
-
-        this.onAddToQueue(data.trackURI);
-      });
     });
   }
 
@@ -236,15 +256,12 @@ class App extends Component {
 
   render() {
     const {
-      token,
       loggedIn,
       artistName,
       trackName,
       albumName,
       albumImage,
       error,
-      position,
-      duration,
       playing,
     } = this.state;
   
@@ -281,22 +298,6 @@ class App extends Component {
             <a href={this.getSpotifyAuthorizationAPI()}>
               Login
             </a>
-            {/* <p>
-              <button onClick={() => this.onConnectSpotify()}>Spotify Login</button>
-            </p> */}
-
-            {/* <p className="App-intro">
-              Enter your Spotify access token. Get it from{" "}
-              <a href="https://beta.developer.spotify.com/documentation/web-playback-sdk/quick-start/#authenticating-with-spotify">
-                here
-              </a>.
-            </p>
-            <p>
-              <input type="text" value={token} onChange={e => this.setState({ token: e.target.value })} />
-            </p>
-            <p>
-              <button onClick={() => this.onLogin()}>Go</button>
-            </p> */}
           </div>)
           }
         </div>
