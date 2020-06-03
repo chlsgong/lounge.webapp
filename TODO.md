@@ -1,6 +1,8 @@
 ### TODO list
 
 # Features
-- Login page
+- Create room objects and load rooms
+- Persist rooms in database
+- Redux
 
 # Bugs
