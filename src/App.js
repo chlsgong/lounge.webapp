@@ -30,6 +30,15 @@ class App extends Component {
     this.playerCheckInterval = null;
   }
 
+  componentDidMount() {
+    const hash = this.getURLHash();
+    console.log('url callback parameters', hash);
+
+    if (hash.state === 'thisisthecorrectapp12345678') {
+      // TODO: get access token
+    }
+  }
+
   checkForPlayer() {
     const { token } = this.state;
   
@@ -60,6 +69,36 @@ class App extends Component {
       // check every second for the player.
     this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
     }
+  }
+
+  getSpotifyAuthorizationAPI = () => {
+    const authorizeAPI = 'https://accounts.spotify.com/authorize'
+    const clientId = '?client_id=16efad44cfd54e3ea050d602af68eadd';
+    const responseType = '&response_type=code';
+    const redirectURI = '&redirect_uri=http://localhost:3000/#';
+    const state = '&state=thisisthecorrectapp12345678';
+    const scope = `&scope=${["streaming", "user-read-email", "user-read-private"].join('%20')}`;
+
+    return authorizeAPI + clientId + responseType + redirectURI + state + scope;
+  }
+
+  getURLHash = () => {
+    // get the hash of the url
+    const hash = window.location.hash
+      .substring(1)
+      .split("&")
+      .reduce((initial, item) => {
+        if (item) {
+          const parts = item.split("=");
+          initial[parts[0]] = decodeURIComponent(parts[1]);
+        }
+        return initial;
+      }, {});
+
+    // clear hash
+    window.location.hash = "";
+
+    return hash;
   }
 
   createEventHandlers() {
@@ -237,6 +276,16 @@ class App extends Component {
           :
           (<div>
             <p className="App-intro">
+              Connect your Spotify account.
+            </p>
+            <a href={this.getSpotifyAuthorizationAPI()}>
+              Login
+            </a>
+            {/* <p>
+              <button onClick={() => this.onConnectSpotify()}>Spotify Login</button>
+            </p> */}
+
+            {/* <p className="App-intro">
               Enter your Spotify access token. Get it from{" "}
               <a href="https://beta.developer.spotify.com/documentation/web-playback-sdk/quick-start/#authenticating-with-spotify">
                 here
@@ -247,7 +296,7 @@ class App extends Component {
             </p>
             <p>
               <button onClick={() => this.onLogin()}>Go</button>
-            </p>
+            </p> */}
           </div>)
           }
         </div>
