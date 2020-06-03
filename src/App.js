@@ -111,7 +111,7 @@ class App extends PureComponent {
   }
 
   getURLParams = () => {
-    // get the hash of the url
+    // get the params of the url
     const params = window.location.search
       .substring(1)
       .split("&")
