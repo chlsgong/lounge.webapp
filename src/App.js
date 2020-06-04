@@ -80,7 +80,8 @@ class App extends PureComponent {
     const authorizeAPI = 'https://accounts.spotify.com/authorize'
     const clientId = '?client_id=16efad44cfd54e3ea050d602af68eadd';
     const responseType = '&response_type=code';
-    const redirectURI = '&redirect_uri=http://localhost:3000';
+    // const redirectURI = '&redirect_uri=http://localhost:3000';
+    const redirectURI = '&redirect_uri=https://chlsgong.com';
     const state = '&state=thisisthecorrectapp12345678';
     const scope = `&scope=${["streaming", "user-read-email", "user-read-private"].join('%20')}`;
 
@@ -94,7 +95,8 @@ class App extends PureComponent {
       body: qs.stringify({
         grant_type: 'authorization_code',
         code,
-        redirect_uri: 'http://localhost:3000',
+        // redirect_uri: 'http://localhost:3000',
+        redirect_uri: 'https://chlsgong.com',
         client_id: '16efad44cfd54e3ea050d602af68eadd',
         client_secret: '10f26b66944143449acf95adcc4074bb',
       }),
@@ -206,9 +208,9 @@ class App extends PureComponent {
   }
 
   onAddToQueue(trackURI) {
-    const { deviceId, auth } = this.state;
+    const { auth } = this.state;
 
-    fetch(`https://api.spotify.com/v1/me/player/queue?uri=${trackURI}&device_id=${deviceId}`, {
+    fetch(`https://api.spotify.com/v1/me/player/queue?uri=${trackURI}`, {
       method: "POST",
       headers: {
         authorization: `Bearer ${auth.access_token}`,
@@ -246,10 +248,15 @@ class App extends PureComponent {
   renderSelectionView = () => {
     return (
       <div className="App">
-        <p>
-          <button onClick={this.onCreateLounge}>Create a lounge</button>
-          <button onClick={this.onJoinLounge}>Join a lounge</button>
-        </p>
+        <div className="App-header">
+          <h2>For my girlfriend Oksana {'<3'}</h2>
+        </div>
+        <div className="App">
+          <p>
+            <button onClick={this.onCreateLounge}>Create a lounge</button>
+            <button onClick={this.onJoinLounge}>Join a lounge</button>
+          </p>
+        </div>
       </div>
     );
   }

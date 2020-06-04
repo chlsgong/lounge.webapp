@@ -84,7 +84,7 @@ class JoinView extends PureComponent {
     return (
       <div className="JoinView">
           <div className="JoinView-header">
-            <h2>Search for a song.</h2>
+            <h2>Search for a song</h2>
           </div>
           <div>
             <p>
