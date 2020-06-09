@@ -1,13 +1,11 @@
 import io from "socket.io-client";
 
-// const ENDPOINT = "http://localhost:8080";
-// const ENDPOINT = "http://34.72.202.89:8080";
-const ENDPOINT = "https://chlsgong.com:8443";
+import config from './config';
 
 export const createSocketHandlers = () => {
-  const socket = io(ENDPOINT);
+  const socket = io(config.server.URL);
 
-  socket.on("connect", data => {
+  socket.on('connect', data => {
     console.log('Connected to server!');
   });
 

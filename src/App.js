@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import _ from 'lodash';
 import qs from 'qs';
 
+import config from './config';
 import { createSocketHandlers } from './socket';
 
 import JoinView from './JoinView';
@@ -80,8 +81,7 @@ class App extends PureComponent {
     const authorizeAPI = 'https://accounts.spotify.com/authorize'
     const clientId = '?client_id=16efad44cfd54e3ea050d602af68eadd';
     const responseType = '&response_type=code';
-    // const redirectURI = '&redirect_uri=http://localhost:3000';
-    const redirectURI = '&redirect_uri=https://chlsgong.com';
+    const redirectURI = `&redirect_uri=${config.spotify.REDIRECT_URI}`;
     const state = '&state=thisisthecorrectapp12345678';
     const scope = `&scope=${["streaming", "user-read-email", "user-read-private"].join('%20')}`;
 
@@ -95,8 +95,7 @@ class App extends PureComponent {
       body: qs.stringify({
         grant_type: 'authorization_code',
         code,
-        // redirect_uri: 'http://localhost:3000',
-        redirect_uri: 'https://chlsgong.com',
+        redirect_uri: config.spotify.REDIRECT_URI,
         client_id: '16efad44cfd54e3ea050d602af68eadd',
         client_secret: '10f26b66944143449acf95adcc4074bb',
       }),
