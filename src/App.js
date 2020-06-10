@@ -27,6 +27,7 @@ class App extends PureComponent {
       isSelecting: true,
       isCreatingLounge: false,
       isJoiningLounge: false,
+      loungeCode: '<Lounge Code>'
     };
 
     this.playerCheckInterval = null;
@@ -64,11 +65,18 @@ class App extends PureComponent {
     // TODO: Store locally and redirect to log back in
 
     this.socket = createSocketHandlers();
+
     this.socket.on('add-to-queue', data => {
       console.log('track received', data);
 
       this.onAddToQueue(data.trackURI);
     });
+
+    this.socket.on('pass-lounge-code', data => {
+      console.log('lounge code received', data);
+
+      this.setState({ loungeCode: data.loungeCode });
+    })
 
     if (this.socket) {
       this.socket.emit('create-lounge', { token: auth.access_token });
@@ -270,6 +278,7 @@ class App extends PureComponent {
       albumImage,
       error,
       playing,
+      loungeCode,
     } = this.state;
   
     if (this.state.isSelecting) {
@@ -281,6 +290,7 @@ class App extends PureComponent {
           <div className="App-header">
             <h2>Now Playing</h2>
             <p>A Spotify Web Playback API Demo.</p>
+            <p>Lounge Code: {loungeCode}</p>
           </div>
     
           {error && <p>Error: {error}</p>}

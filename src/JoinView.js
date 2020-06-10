@@ -14,6 +14,7 @@ class JoinView extends PureComponent {
       tracks: [],
       selectedTrackName: '',
       loungeId: '',
+      loungeCode: '',
       hasJoinedRoom: false,
     };
   }
@@ -49,15 +50,16 @@ class JoinView extends PureComponent {
   }
 
   onJoinRoom = () => {
+    // TODO: error handling
     this.setState({ hasJoinedRoom: true });
 
     this.socket = createSocketHandlers();
-    this.socket.on('pass-token', ({ token }) => {
+    this.socket.on('pass-lounge-info', ({ id, token }) => {
       console.log('token received', token);
 
-      this.setState({ token });
+      this.setState({ loungeId: id, token });
     });
-    this.socket.emit('join-lounge', { id: this.state.loungeId });
+    this.socket.emit('join-lounge', { code: this.state.loungeCode });
   }
 
   renderSearchResultsView = () => {
@@ -84,19 +86,24 @@ class JoinView extends PureComponent {
   }
 
   renderRoomSelectionView = () => {
-    const { loungeId } = this.state;
+    const { loungeCode } = this.state;
 
     return (
       <div className="JoinView">
         <div className="JoinView-header">
-          <h2>Select a music lounge</h2>
+          <h2>Join a music lounge</h2>
         </div>
         <div>
           <p>
-            <input type="text" value={loungeId} onChange={e => this.setState({ loungeId: e.target.value })} />
+            <input
+              type="text"
+              value={loungeCode}
+              onChange={e => this.setState({ loungeCode: e.target.value })}
+              placeholder='Lounge Code'
+            />
           </p>
           <p>
-            <button disabled={!loungeId} onClick={this.onJoinRoom}>Join</button>
+            <button disabled={!loungeCode} onClick={this.onJoinRoom}>Join</button>
           </p>
         </div>
       </div>
