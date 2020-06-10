@@ -248,7 +248,8 @@ class App extends PureComponent {
     return (
       <div className="App">
         <div className="App-header">
-          <h2>For my girlfriend Oksana {'<3'}</h2>
+          <h2>Lounge</h2>
+          <h3>You are the DJ</h3>
         </div>
         <div className="App">
           <p>

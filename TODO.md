@@ -1,8 +1,9 @@
 ### TODO list
 
 # Features
-- Create room objects and load rooms
 - Persist rooms in database
+- Join rooms by code
+- Move Spotify API to server
 - Redux
 
 # Bugs

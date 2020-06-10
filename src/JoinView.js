@@ -13,23 +13,16 @@ class JoinView extends PureComponent {
       queryString: '',
       tracks: [],
       selectedTrackName: '',
+      loungeId: '',
+      hasJoinedRoom: false,
     };
   }
 
-  componentDidMount() {
-    this.socket = createSocketHandlers();
-    this.socket.on('pass-token', ({ token }) => {
-      console.log('token received', token);
-
-      this.setState({ token });
-    });
-    this.socket.emit('join-lounge');
-  }
 
   onAddToQueue = (trackURI, trackName) => {
     this.setState({ selectedTrackName: trackName });
 
-    this.socket.emit('add-to-queue', { trackURI });
+    this.socket.emit('add-to-queue', { id: this.state.loungeId, trackURI });
   }
 
   onSearch = () => {
@@ -55,7 +48,19 @@ class JoinView extends PureComponent {
     });
   }
 
-  renderSearchResults = () => {
+  onJoinRoom = () => {
+    this.setState({ hasJoinedRoom: true });
+
+    this.socket = createSocketHandlers();
+    this.socket.on('pass-token', ({ token }) => {
+      console.log('token received', token);
+
+      this.setState({ token });
+    });
+    this.socket.emit('join-lounge', { id: this.state.loungeId });
+  }
+
+  renderSearchResultsView = () => {
     const { tracks } = this.state;
     
     return (
@@ -78,8 +83,32 @@ class JoinView extends PureComponent {
     )
   }
 
+  renderRoomSelectionView = () => {
+    const { loungeId } = this.state;
+
+    return (
+      <div className="JoinView">
+        <div className="JoinView-header">
+          <h2>Select a music lounge</h2>
+        </div>
+        <div>
+          <p>
+            <input type="text" value={loungeId} onChange={e => this.setState({ loungeId: e.target.value })} />
+          </p>
+          <p>
+            <button disabled={!loungeId} onClick={this.onJoinRoom}>Join</button>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const { queryString, selectedTrackName } = this.state;
+
+    if (!this.state.hasJoinedRoom) {
+      return this.renderRoomSelectionView();
+    }
 
     return (
       <div className="JoinView">
@@ -94,7 +123,7 @@ class JoinView extends PureComponent {
               <button disabled={!queryString} onClick={this.onSearch}>Search</button>
             </p>
             {selectedTrackName ? <p>Song added: {selectedTrackName}</p> : null}
-            {this.renderSearchResults()}
+            {this.renderSearchResultsView()}
           </div>
         </div>
     );
