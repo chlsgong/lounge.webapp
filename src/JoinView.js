@@ -38,15 +38,15 @@ class JoinView extends PureComponent {
         "Content-Type": "application/json",
       },
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log('success', data);
+      .then(response => response.json())
+      .then(data => {
+        console.log('success', data);
 
-      this.setState({ tracks: data?.tracks?.items });
-    })
-    .catch(error => {
-      console.log('error', error);
-    });
+        this.setState({ tracks: data?.tracks?.items });
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
   }
 
   onJoinRoom = () => {

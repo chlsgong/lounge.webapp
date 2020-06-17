@@ -62,6 +62,8 @@ class App extends PureComponent {
   login(auth) {
     this.setState({ auth, loggedIn: true });
 
+    this.getSpotifyProfile(auth);
+
     // TODO: Store locally and redirect to log back in
 
     this.socket = createSocketHandlers();
@@ -108,15 +110,15 @@ class App extends PureComponent {
         client_secret: '10f26b66944143449acf95adcc4074bb',
       }),
     })
-    .then(response => response.json())
-    .then(auth => {
-      console.log('success', auth);
+      .then(response => response.json())
+      .then(auth => {
+        console.log('success', auth);
 
-      this.login(auth);
-    })
-    .catch(error => {
-      console.log('error', error);
-    });
+        this.login(auth);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
   }
 
   getURLParams = () => {
@@ -196,6 +198,23 @@ class App extends PureComponent {
         playing
       });
     }
+  }
+
+  getSpotifyProfile = (auth) => {
+    fetch("https://api.spotify.com/v1/me", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${auth.access_token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('success', data);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });;
   }
 
   transferPlaybackHere() {
