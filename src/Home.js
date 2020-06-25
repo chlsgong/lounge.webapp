@@ -34,7 +34,7 @@ class Home extends PureComponent {
         this.setState({ spotifyProfile });
 
         const spotifyId = _.get(spotifyProfile, 'id');
-        if (spotifyId) this.getUser(spotifyId);
+        // if (spotifyId) this.getUser(spotifyId);
       })
       .catch(error => {
         console.log('error', error);
