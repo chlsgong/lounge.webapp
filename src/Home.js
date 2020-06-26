@@ -3,6 +3,7 @@ import { Flex, Heading } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 import _ from 'lodash';
+import axios from 'axios';
 
 import config from './config';
 
@@ -34,7 +35,7 @@ class Home extends PureComponent {
         this.setState({ spotifyProfile });
 
         const spotifyId = _.get(spotifyProfile, 'id');
-        // if (spotifyId) this.getUser(spotifyId);
+        if (spotifyId) this.getUser(spotifyId);
       })
       .catch(error => {
         console.log('error', error);
@@ -42,35 +43,32 @@ class Home extends PureComponent {
   }
 
   getUser = (spotifyId) => {
-    const query = `?spotify_id=${encodeURI(spotifyId)}`;
-
-    fetch(config.server.URL + '/user' + query, {
-      method: "GET",
+    axios.get(config.server.URL + '/user', {
+      params: {
+        spotify_id: spotifyId
+      }
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('success', data);
+      .then(response => {
+        console.log('success', response.data)
       })
       .catch(error => {
-        console.log('error', error);
+        console.log('error', error.response);
 
-        // if not found create user
+        if (error.response.status === 404) {
+          this.createUser(spotifyId);
+        }
       });
   }
 
   createUser = (spotifyId) => {
-    fetch(config.server.URL + '/user', {
-      method: "POST",
-      body: JSON.stringify({
-        'spotify_id': spotifyId,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('success', data);
+    axios.post(config.server.URL + '/user', {
+        spotify_id: spotifyId,
+      })
+      .then(response => {
+        console.log('success', response.data)
       })
       .catch(error => {
-        console.log('error', error);
+        console.log('error', error.response);
       });
   }
 

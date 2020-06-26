@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux'
 import { Button, Flex, Heading } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 import qs from 'qs';
 
 import config from './config';
+import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
 import Home from './Home';
 
@@ -14,7 +16,6 @@ class App2 extends PureComponent {
 
     this.state = {
       auth: null,
-      isLoggedIn: false,
     };
   }
 
@@ -27,7 +28,8 @@ class App2 extends PureComponent {
   }
 
   login(auth) {
-    this.setState({ auth, isLoggedIn: true });
+    this.setState({ auth });
+    this.props.onLoginSuccess();
   }
 
   getURLParams = () => {
@@ -87,7 +89,8 @@ class App2 extends PureComponent {
   }
 
   render() {
-    const { isLoggedIn, auth } = this.state;
+    const { auth } = this.state;
+    const { isLoggedIn } = this.props;
 
     if (isLoggedIn) {
       return (
@@ -133,4 +136,4 @@ class App2 extends PureComponent {
   }
 }
 
-export default App2;
+export default connect(mapStateToProps, mapDispatchToProps)(App2);
