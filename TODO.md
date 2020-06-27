@@ -1,11 +1,11 @@
 ### TODO list
 
 # Features
-- Use mongoose
+- Use middlewares
+- Use axios
+- File structure
 - Persist rooms in database
 - Add localhost self-signed certificate
 - Deploy and make Dev Ops scripts
-- Move Spotify API to server
-- Redux
 
 # Bugs
