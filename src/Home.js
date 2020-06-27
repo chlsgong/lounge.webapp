@@ -24,7 +24,7 @@ class Home extends PureComponent {
     fetch("https://api.spotify.com/v1/me", {
       method: "GET",
       headers: {
-        authorization: `Bearer ${auth.access_token}`,
+        authorization: `Bearer ${auth.accessToken}`,
         "Content-Type": "application/json",
       },
     })

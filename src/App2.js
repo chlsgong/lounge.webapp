@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Button, Flex, Heading } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
-import qs from 'qs';
 
 import config from './config';
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
@@ -23,13 +22,8 @@ class App2 extends PureComponent {
     const { code, state } = this.getURLParams();
 
     if (code && state === 'thisisthecorrectapp12345678') {
-      this.requestSpotifyTokenAPI(code);
+      this.props.onRequestSpotifyToken(code);
     }
-  }
-
-  login(auth) {
-    this.setState({ auth });
-    this.props.onLoginSuccess();
   }
 
   getURLParams = () => {
@@ -61,36 +55,12 @@ class App2 extends PureComponent {
     return authorizeAPI + clientId + responseType + redirectURI + state + scope;
   }
 
-  requestSpotifyTokenAPI = (code) => {
-    return fetch("https://accounts.spotify.com/api/token", {
-      method: "POST",
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: qs.stringify({
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: config.spotify.REDIRECT_URI,
-        client_id: '16efad44cfd54e3ea050d602af68eadd',
-        client_secret: '10f26b66944143449acf95adcc4074bb',
-      }),
-    })
-      .then(response => response.json())
-      .then(auth => {
-        console.log('success', auth);
-
-        this.login(auth);
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
-  }
-
   onLoginWithSpotify = () => {
     window.location.href = this.getSpotifyAuthorizationAPI();
   }
 
   render() {
-    const { auth } = this.state;
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, auth } = this.props;
 
     if (isLoggedIn) {
       return (

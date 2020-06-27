@@ -1,14 +1,11 @@
 import _ from 'lodash';
-import loginSlice from './redux/slices/login';
+import { requestSpotifyToken } from './redux/auth/actions';
 
-export const mapStateToProps = state => {
-  return {
-    isLoggedIn: _.get(state, 'isLoggedIn'),
-  };
-};
+export const mapStateToProps = state => ({
+  isLoggedIn: _.get(state, 'login.isLoggedIn'),
+  auth: _.get(state, 'auth'),
+});
 
-export const mapDispatchToProps = dispatch => {
-  return {
-    onLoginSuccess: () => dispatch(loginSlice.actions.loginSuccess()),
-  };
-};
+export const mapDispatchToProps = dispatch => ({
+  onRequestSpotifyToken: (code) => dispatch(requestSpotifyToken(code)),
+});

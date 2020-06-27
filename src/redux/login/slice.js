@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import reducer, { initialState } from './reducer';
+import { initialState, reducer, extraReducer } from './reducer';
 
 const loginSlice = createSlice({
   name: 'login',
   initialState,
-  reducers: reducer
+  reducers: reducer,
+  extraReducers: extraReducer,
 });
 
 export default loginSlice;
