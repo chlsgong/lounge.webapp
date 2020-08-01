@@ -4,59 +4,14 @@ import { Button, Flex, Heading } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 
-import config from './config';
-import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
+import { mapStateToProps } from './reduxMappings';
+import { getSpotifyAuthorizationAPI } from './utils/spotify';
 
 import Home from './Home';
 
 class App2 extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      auth: null,
-    };
-  }
-
-  componentDidMount() {
-    const { code, state } = this.getURLParams();
-
-    if (code && state === 'thisisthecorrectapp12345678') {
-      this.props.onRequestSpotifyToken(code);
-    }
-  }
-
-  getURLParams = () => {
-    // get the params of the url
-    const params = window.location.search
-      .substring(1)
-      .split("&")
-      .reduce((initial, item) => {
-        if (item) {
-          const parts = item.split("=");
-          initial[parts[0]] = decodeURIComponent(parts[1]);
-        }
-        return initial;
-      }, {});
-
-    console.log('url callback parameters', params);
-
-    return params;
-  }
-
-  getSpotifyAuthorizationAPI = () => {
-    const authorizeAPI = 'https://accounts.spotify.com/authorize'
-    const clientId = '?client_id=16efad44cfd54e3ea050d602af68eadd';
-    const responseType = '&response_type=code';
-    const redirectURI = `&redirect_uri=${config.spotify.REDIRECT_URI}`;
-    const state = '&state=thisisthecorrectapp12345678';
-    const scope = `&scope=${["streaming", "user-read-email", "user-read-private"].join('%20')}`;
-
-    return authorizeAPI + clientId + responseType + redirectURI + state + scope;
-  }
-
   onLoginWithSpotify = () => {
-    window.location.href = this.getSpotifyAuthorizationAPI();
+    window.location.href = getSpotifyAuthorizationAPI();
   }
 
   render() {
@@ -106,4 +61,4 @@ class App2 extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App2);
+export default connect(mapStateToProps)(App2);

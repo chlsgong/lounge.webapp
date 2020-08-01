@@ -1,8 +1,9 @@
 ### TODO list
 
 # Features
-- Use middlewares
 - Use axios
+- Spotify API file
+- Server API file
 - File structure
 - Persist rooms in database
 - Add localhost self-signed certificate
