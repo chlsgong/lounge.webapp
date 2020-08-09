@@ -5,13 +5,13 @@ import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 
 import { mapStateToProps } from './reduxMappings';
-import { getSpotifyAuthorizationAPI } from './utils/spotify';
+import { getSpotifyAuthorize } from './api/spotify';
 
 import Home from './Home';
 
 class App2 extends PureComponent {
   onLoginWithSpotify = () => {
-    window.location.href = getSpotifyAuthorizationAPI();
+    window.location.href = getSpotifyAuthorize();
   }
 
   render() {

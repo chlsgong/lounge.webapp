@@ -1,8 +1,4 @@
 import qs from 'qs';
 
-export const getURLParams = () => {
-  const urlSearchString = window.location.search.substring(1);
-  const params = qs.parse(urlSearchString);
-
-  return params;
-};
+export const getURLParams = (query) => qs.parse(query, { ignoreQueryPrefix: true });
+export const createURLQuery = (params) => qs.stringify(params, { addQueryPrefix: true });
