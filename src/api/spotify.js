@@ -5,22 +5,25 @@ import { createInstance, createPostRequest, createGetRequest, getAuthHeader } fr
 import { createURLQuery } from '../utils/url';
 
 const spotify = {
-  url: 'https://accounts.spotify.com',
+  accounts: {
+    url: 'https://accounts.spotify.com',
+    api: {
+      token: '/api/token',
+    },
+    authorize: '/authorize',
+  },
   api: {
-    token: '/api/token',
+    url: 'https://api.spotify.com',
+    v1: {
+      me: '/v1/me',
+      player: '/v1/me/player',
+      queue: '/v1/me/player/queue',
+    },
   },
-  authorize: {
-    root: '/authorize',
-  },
-  v1: {
-    me: '/v1/me',
-    player: '/v1/me/player',
-    queue: '/v1/me/player/queue',
-  }
-  // https://api.spotify.com
 };
 
-const spotifyInstance = createInstance({ baseURL: spotify.url });
+const spotifyAccounts = createInstance({ baseURL: spotify.accounts.url });
+const spotifyAPI = createInstance({ baseURL: spotify.api.url });
 
 export const getSpotifyAuthorize = () => {
   const params = {
@@ -30,7 +33,7 @@ export const getSpotifyAuthorize = () => {
     'state': 'thisisthecorrectapp12345678',
     'scope': ['streaming', 'user-read-email', 'user-read-private'].join(' '),
   }
-  const url = spotify.url + spotify.authorize.root + createURLQuery(params);
+  const url = spotify.accounts.url + spotify.accounts.authorize + createURLQuery(params);
 
   return url;
 };
@@ -38,7 +41,7 @@ export const getSpotifyAuthorize = () => {
 export const postSpotifyToken = code => {
   return createPostRequest(
     {
-      url: spotify.api.token,
+      url: spotify.accounts.api.token,
       body: qs.stringify({
         grant_type: 'authorization_code',
         code,
@@ -50,34 +53,18 @@ export const postSpotifyToken = code => {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       },
     },
-    spotifyInstance,
+    spotifyAccounts,
   );
 };
 
 export const getSpotifyUserProfile = token => {
   return createGetRequest(
     {
-      url: spotify.v1.me, // WTFFFF
-      // url: 'https://api.spotify.com/v1/me',
+      url: spotify.api.v1.me,
       config: {
         headers: getAuthHeader(token),
       },
     },
-    spotifyInstance,
+    spotifyAPI,
   );
-
-  // fetch("https://api.spotify.com/v1/me", {
-  //     method: "GET",
-  //     headers: {
-  //       authorization: `Bearer ${token}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then(response => response.json())
-  //     .then(spotifyProfile => {
-  //       console.log('success', spotifyProfile);
-  //     })
-  //     .catch(error => {
-  //       console.log('error', error);
-  //     });
 };

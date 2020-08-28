@@ -8,7 +8,6 @@ const handleInitWebApp = store => {
   const { code, state } = getURLParams(window.location.search);
 
   if (isVerifiedSpotifyApp(code, state)) {
-    console.log('Request spotify token', code);
     store.dispatch(authActions.requestSpotifyToken({ code }));
   }
 };

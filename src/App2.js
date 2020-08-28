@@ -15,15 +15,12 @@ class App2 extends PureComponent {
   }
 
   render() {
-    const { isLoggedIn, auth, getSpotifyUserProfile } = this.props;
+    const { isLoggedIn, auth } = this.props;
 
     if (isLoggedIn) {
       return (
         <ThemeProvider theme={preset}>
-          <Home
-            auth={auth}
-            getSpotifyUserProfile={getSpotifyUserProfile} // NOTE: temporary
-          />;
+          <Home auth={auth} />;
         </ThemeProvider>
       );
     }
