@@ -4,7 +4,7 @@ import { Button, Flex, Heading } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 
-import { mapStateToProps } from './reduxMappings';
+import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 import { getSpotifyAuthorize } from './api/spotify';
 
 import Home from './Home';
@@ -61,4 +61,4 @@ class App2 extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps)(App2);
+export default connect(mapStateToProps, mapDispatchToProps)(App2);

@@ -1,6 +1,9 @@
-import _ from 'lodash';
+import { selectIsLoggedIn } from './redux/login/selectors';
+import { selectAuth } from './redux/auth/selectors';
 
 export const mapStateToProps = state => ({
-  isLoggedIn: _.get(state, 'login.isLoggedIn'),
-  auth: _.get(state, 'auth'),
+  isLoggedIn: selectIsLoggedIn(state),
+  auth: selectAuth(state),
 });
+
+export const mapDispatchToProps = dispatch => ({});

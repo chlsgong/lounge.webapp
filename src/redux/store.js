@@ -3,16 +3,20 @@ import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
 import loginSlice from './login/slice';
 import authSlice from './auth/slice';
+import userSlice from './user/slice';
 import loginMiddleware from './login/middleware';
+import userMiddleware from './user/middleware';
 
 const reducer = {
   login: loginSlice.reducer,
   auth: authSlice.reducer,
+  user: userSlice.reducer,
 };
 
 const middleware = [
   ...getDefaultMiddleware(),
   loginMiddleware,
+  userMiddleware,
   // logger, // NOTE: must be the last middleware
 ];
 
