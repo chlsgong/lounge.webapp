@@ -5,7 +5,7 @@ import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
-import { getSpotifyAuthorize } from './api/spotify';
+import { getSpotifyAuthorize } from '../api/spotify';
 
 import Home from './Home';
 
