@@ -1,6 +1,12 @@
-import _ from 'lodash';
+import { selectIsLoggedIn } from './redux/login/selectors';
+import { selectAuth } from './redux/auth/selectors';
+import { requestSpotifyUserProfile } from './redux/user/actions';
 
 export const mapStateToProps = state => ({
-  isLoggedIn: _.get(state, 'login.isLoggedIn'),
-  auth: _.get(state, 'auth'),
+  isLoggedIn: selectIsLoggedIn(state),
+  auth: selectAuth(state),
+});
+
+export const mapDispatchToProps = dispatch => ({
+  getSpotifyUserProfile: () => dispatch(requestSpotifyUserProfile()),
 });

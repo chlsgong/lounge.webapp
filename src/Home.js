@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Flex, Heading } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
-import _ from 'lodash';
 import axios from 'axios';
 
 import config from './config';
@@ -17,7 +16,9 @@ class Home extends PureComponent {
   }
 
   componentDidMount() {
-    this.getSpotifyProfile(this.props.auth);
+    console.log(this.props);
+    this.props.getSpotifyUserProfile();
+    // this.getSpotifyProfile(this.props.auth);
   }
 
   getSpotifyProfile = (auth) => {
@@ -34,7 +35,7 @@ class Home extends PureComponent {
 
         this.setState({ spotifyProfile });
 
-        const spotifyId = _.get(spotifyProfile, 'id');
+        const spotifyId = spotifyProfile?.id;
         if (spotifyId) this.getUser(spotifyId);
       })
       .catch(error => {

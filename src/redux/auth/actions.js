@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import { postSpotifyToken } from '../../api/spotify';
 
 export const requestSpotifyToken = createAsyncThunk(

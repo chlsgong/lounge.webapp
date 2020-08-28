@@ -4,7 +4,7 @@ import { createActionMap } from '../../utils/redux';
 import { getURLParams } from '../../utils/url';
 import { isVerifiedSpotifyApp } from '../../utils/spotify';
 
-const handleInitWebApp = (store) => {
+const handleInitWebApp = store => {
   const { code, state } = getURLParams(window.location.search);
 
   if (isVerifiedSpotifyApp(code, state)) {

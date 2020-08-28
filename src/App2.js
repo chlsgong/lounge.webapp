@@ -4,7 +4,7 @@ import { Button, Flex, Heading } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 
-import { mapStateToProps } from './reduxMappings';
+import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 import { getSpotifyAuthorize } from './api/spotify';
 
 import Home from './Home';
@@ -15,12 +15,15 @@ class App2 extends PureComponent {
   }
 
   render() {
-    const { isLoggedIn, auth } = this.props;
+    const { isLoggedIn, auth, getSpotifyUserProfile } = this.props;
 
     if (isLoggedIn) {
       return (
         <ThemeProvider theme={preset}>
-          <Home auth={auth} />;
+          <Home
+            auth={auth}
+            getSpotifyUserProfile={getSpotifyUserProfile} // NOTE: temporary
+          />;
         </ThemeProvider>
       );
     }
@@ -61,4 +64,4 @@ class App2 extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps)(App2);
+export default connect(mapStateToProps, mapDispatchToProps)(App2);
