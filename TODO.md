@@ -1,10 +1,7 @@
 ### TODO list
 
 # Features
-- Use axios
-- Spotify API file
-- Server API file
-- File structure
+- Create components
 - Persist rooms in database
 - Add localhost self-signed certificate
 - Deploy and make Dev Ops scripts

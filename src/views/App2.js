@@ -20,7 +20,7 @@ class App2 extends PureComponent {
     if (isLoggedIn) {
       return (
         <ThemeProvider theme={preset}>
-          <Home auth={auth} />;
+          <Home auth={auth} />
         </ThemeProvider>
       );
     }
@@ -30,7 +30,6 @@ class App2 extends PureComponent {
         <Flex
           flexDirection='column'
           alignItems='center'
-          bg='primary'
         >
           <Heading
             variant='display'
@@ -40,8 +39,7 @@ class App2 extends PureComponent {
           </Heading>
           <Flex
             justifyContent='center'
-            bg='primary'
-            p={8}
+            p={7}
           >
             <Button
               sx={{
