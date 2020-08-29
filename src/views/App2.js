@@ -15,12 +15,12 @@ class App2 extends PureComponent {
   }
 
   render() {
-    const { isLoggedIn, auth } = this.props;
+    const { isLoggedIn } = this.props;
 
     if (isLoggedIn) {
       return (
         <ThemeProvider theme={preset}>
-          <Home auth={auth} />
+          <Home />
         </ThemeProvider>
       );
     }

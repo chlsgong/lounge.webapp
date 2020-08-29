@@ -4,6 +4,7 @@ import { createInstance, createPostRequest, createGetRequest } from '../utils/ap
 const lounge = {
   url: config.server.URL,
   user: '/user',
+  lounge: '/lounge',
 };
 
 const loungeInstance = createInstance({ baseURL: lounge.url });
@@ -33,3 +34,19 @@ export const createUser = spotifyId => {
     loungeInstance,
   );
 };
+
+export const createLounge = ({ hostId, name, code, refreshToken }) => {
+  return createPostRequest(
+    {
+      url: lounge.lounge,
+      body: {
+        host_id: hostId,
+        name: name,
+        code: code,
+        refresh_token: refreshToken,
+      },
+    },
+    loungeInstance,
+  );
+};
+

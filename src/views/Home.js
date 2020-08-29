@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux'
 import { Flex, Heading, Button, Text } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 
+import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
+
 class Home extends PureComponent {
   onCreateLounge = () => {
-
+    this.props.createLounge();
   }
 
   renderLoungeItem = ({ name, code }) => {
@@ -125,4 +128,4 @@ class Home extends PureComponent {
   }
 }
 
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

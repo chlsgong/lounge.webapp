@@ -1,9 +1,10 @@
 import { selectIsLoggedIn } from '../redux/login/selectors';
-import { selectAuth } from '../redux/auth/selectors';
+import { createLoungeRoom } from '../redux/lounge/actions';
 
 export const mapStateToProps = state => ({
   isLoggedIn: selectIsLoggedIn(state),
-  auth: selectAuth(state),
 });
 
-export const mapDispatchToProps = dispatch => ({});
+export const mapDispatchToProps = dispatch => ({
+  createLounge: () => dispatch(createLoungeRoom()),
+});

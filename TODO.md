@@ -7,3 +7,4 @@
 - Deploy and make Dev Ops scripts
 
 # Bugs
+- Add key prop to list items
