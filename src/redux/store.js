@@ -4,6 +4,7 @@ import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import loginSlice from './login/slice';
 import authSlice from './auth/slice';
 import userSlice from './user/slice';
+import loungeSlice from './lounge/slice';
 import loginMiddleware from './login/middleware';
 import userMiddleware from './user/middleware';
 
@@ -11,6 +12,7 @@ const reducer = {
   login: loginSlice.reducer,
   auth: authSlice.reducer,
   user: userSlice.reducer,
+  lounge: loungeSlice.reducer,
 };
 
 const middleware = [

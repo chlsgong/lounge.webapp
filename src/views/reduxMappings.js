@@ -6,5 +6,5 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  createLounge: () => dispatch(createLoungeRoom()),
+  createLounge: (name) => dispatch(createLoungeRoom(name)),
 });

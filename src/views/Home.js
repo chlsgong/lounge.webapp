@@ -8,7 +8,7 @@ import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
 class Home extends PureComponent {
   onCreateLounge = () => {
-    this.props.createLounge();
+    this.props.createLounge('charles 1');
   }
 
   renderLoungeItem = ({ name, code }) => {

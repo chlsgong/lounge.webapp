@@ -1,6 +1,7 @@
 ### TODO list
 
 # Features
+- DB update triggers
 - Create components
 - Persist rooms in database
 - Add localhost self-signed certificate
