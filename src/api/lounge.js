@@ -9,13 +9,14 @@ const lounge = {
 
 const loungeInstance = createInstance({ baseURL: lounge.url });
 
-export const getUser = spotifyId => {
+export const getUser = ({ spotifyId, userId }) => {
   return createGetRequest(
     {
       url: lounge.user,
       config: {
         params: {
           spotify_id: spotifyId,
+          user_id: userId,
         },
       },
     },

@@ -1,9 +1,8 @@
 ### TODO list
 
 # Features
-- DB update triggers
+- DB middlewares
 - Create components
-- Persist rooms in database
 - Add localhost self-signed certificate
 - Deploy and make Dev Ops scripts
 

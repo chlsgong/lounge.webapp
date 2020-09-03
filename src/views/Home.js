@@ -41,42 +41,7 @@ class Home extends PureComponent {
   }
 
   renderLoungeList = lounges => {
-    const testLounges = [
-      {
-        name: 'Lounge 1',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 2',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 3',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 4',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 5',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 6',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 7',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 8',
-        code: '123ABC'
-      }
-    ];
-
-    const loungeItems = testLounges.map(item => {
+    const loungeItems = lounges.map(item => {
       return this.renderLoungeItem(item);
     }); 
 
@@ -91,6 +56,8 @@ class Home extends PureComponent {
   }
 
   render() {
+    const { lounges } = this.props;
+
     return (
       <ThemeProvider theme={preset}>
         <Flex
@@ -121,7 +88,7 @@ class Home extends PureComponent {
               Create new lounge
             </Button>
           </Flex>
-          {this.renderLoungeList()}
+          {this.renderLoungeList(lounges)}
         </Flex>
       </ThemeProvider>
     );

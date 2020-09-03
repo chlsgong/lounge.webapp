@@ -7,6 +7,7 @@ import userSlice from './user/slice';
 import loungeSlice from './lounge/slice';
 import loginMiddleware from './login/middleware';
 import userMiddleware from './user/middleware';
+import loungeMiddleware from './lounge/middleware';
 
 const reducer = {
   login: loginSlice.reducer,
@@ -19,6 +20,7 @@ const middleware = [
   ...getDefaultMiddleware(),
   loginMiddleware,
   userMiddleware,
+  loungeMiddleware,
   // logger, // NOTE: must be the last middleware
 ];
 
