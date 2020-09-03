@@ -1,16 +1,20 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux'
 import { Flex, Heading, Button, Text } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 
+import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
+
 class Home extends PureComponent {
   onCreateLounge = () => {
-
+    this.props.createLounge('charles 1');
   }
 
-  renderLoungeItem = ({ name, code }) => {
+  renderLoungeItem = ({ name, code }, index) => {
     return (
       <Flex
+        key={index}
         flexDirection='column'
         alignItems='flex-start'
         justifyContent='space-evenly'
@@ -38,43 +42,8 @@ class Home extends PureComponent {
   }
 
   renderLoungeList = lounges => {
-    const testLounges = [
-      {
-        name: 'Lounge 1',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 2',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 3',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 4',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 5',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 6',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 7',
-        code: '123ABC'
-      },
-      {
-        name: 'Lounge 8',
-        code: '123ABC'
-      }
-    ];
-
-    const loungeItems = testLounges.map(item => {
-      return this.renderLoungeItem(item);
+    const loungeItems = lounges.map((item, index) => {
+      return this.renderLoungeItem(item, index);
     }); 
 
     return (
@@ -88,6 +57,8 @@ class Home extends PureComponent {
   }
 
   render() {
+    const { lounges } = this.props;
+
     return (
       <ThemeProvider theme={preset}>
         <Flex
@@ -118,11 +89,11 @@ class Home extends PureComponent {
               Create new lounge
             </Button>
           </Flex>
-          {this.renderLoungeList()}
+          {this.renderLoungeList(lounges)}
         </Flex>
       </ThemeProvider>
     );
   }
 }
 
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

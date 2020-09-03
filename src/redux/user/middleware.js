@@ -10,17 +10,20 @@ const handleLogInSuccess = store => {
 const handleGetSpotifyProfileSuccess = store => {
   const state = store.getState();
   const spotifyId = selectSpotifyId(state);
-  store.dispatch(requestLoungeUser(spotifyId));
+  store.dispatch(requestLoungeUser({ spotifyId }));
 };
 
 // const handleGetLoungeUserSuccess = store => {
 //   // Success
 // };
 
-const handleGetLoungeUserFailure = store => {
-  const state = store.getState();
-  const spotifyId = selectSpotifyId(state);
-  store.dispatch(createLoungeUser(spotifyId));
+const handleGetLoungeUserFailure = (store, payload) => {
+  const { reason } = payload;
+  if (reason === 'spotifyUserNotFound') {
+    const state = store.getState();
+    const spotifyId = selectSpotifyId(state);
+    store.dispatch(createLoungeUser(spotifyId));
+  }
 };
 
 const actionMap = createActionMap({
