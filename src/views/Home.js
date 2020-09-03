@@ -11,9 +11,10 @@ class Home extends PureComponent {
     this.props.createLounge('charles 1');
   }
 
-  renderLoungeItem = ({ name, code }) => {
+  renderLoungeItem = ({ name, code }, index) => {
     return (
       <Flex
+        key={index}
         flexDirection='column'
         alignItems='flex-start'
         justifyContent='space-evenly'
@@ -41,8 +42,8 @@ class Home extends PureComponent {
   }
 
   renderLoungeList = lounges => {
-    const loungeItems = lounges.map(item => {
-      return this.renderLoungeItem(item);
+    const loungeItems = lounges.map((item, index) => {
+      return this.renderLoungeItem(item, index);
     }); 
 
     return (
