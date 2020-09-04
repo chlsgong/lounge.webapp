@@ -38,10 +38,12 @@ class App2 extends PureComponent {
             Lounge
           </Heading>
           <Flex
+            flexDirection='column'
             justifyContent='center'
             p={7}
           >
             <Button
+              my={2}
               sx={{
                 ':hover': {
                   ...preset.buttons.primary,
@@ -51,6 +53,18 @@ class App2 extends PureComponent {
               onClick={this.onLoginWithSpotify}
             >
               Login with Spotify
+            </Button>
+            <Button
+              my={2}
+              sx={{
+                ':hover': {
+                  ...preset.buttons.primary,
+                }
+              }}
+              variant='secondary'
+              onClick={() => null}
+            >
+              Join a Lounge room
             </Button>
           </Flex>
         </Flex>

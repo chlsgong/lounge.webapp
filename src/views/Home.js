@@ -7,17 +7,50 @@ import preset from '@rebass/preset'
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
 class Home extends PureComponent {
-  onCreateLounge = () => {
+  isLoungeActive = loungeId => {
+    const activeLoungeId = this.props.activeLounge.loungeId;
+    return loungeId === activeLoungeId;
+  }
+
+  onCreateLoungeButtonClick = () => {
     this.props.createLounge('charles 1');
   }
 
-  renderLoungeItem = ({ name, code }, index) => {
+  onLoungeButtonClick = loungeId => {
+    if (this.isLoungeActive(loungeId)) {
+      this.props.closeLounge(loungeId);
+    }
+    else {
+      this.props.openLounge(loungeId);
+    } 
+  }
+
+  renderLoungeButton = loungeId => {
+    const text = this.isLoungeActive(loungeId) ? 'Close' : 'Open';
+
+    return (
+      <Flex
+        alignItems='center'
+        justifyContent='center'
+      >
+        <Button
+          variant='secondary'
+          onClick={() => this.onLoungeButtonClick(loungeId)}
+        >
+          {text}
+        </Button>
+      </Flex>
+    );
+  }
+
+  // TODO: change _id to id on server side
+  renderLoungeItem = ({ _id, name, code }, index) => {
     return (
       <Flex
         key={index}
-        flexDirection='column'
-        alignItems='flex-start'
-        justifyContent='space-evenly'
+        flexDirection='row'
+        alignItems='stretch'
+        justifyContent='space-between'
         height={128}
         px={3}
         sx={{
@@ -25,23 +58,31 @@ class Home extends PureComponent {
           borderWidth: 1,
         }}
       >
-        <Text
-          fontSize={4}
-          color='secondary'
+        <Flex
+          flexDirection='column'
+          justifyContent='space-evenly'
         >
-          {name}
-        </Text>
-        <Text
-          fontSize={3}
-          color='secondary'
-        >
-          {code}
-        </Text>
+          <Text
+            fontSize={4}
+            color='secondary'
+          >
+            {name}
+          </Text>
+          <Text
+            fontSize={3}
+            color='secondary'
+          >
+            {code}
+          </Text>
+        </Flex>
+        {this.renderLoungeStatus(_id)}
+        {this.renderLoungeButton(_id)}
       </Flex>
     );
   }
 
-  renderLoungeList = lounges => {
+  renderLoungeList = () => {
+    const { lounges } = this.props;
     const loungeItems = lounges.map((item, index) => {
       return this.renderLoungeItem(item, index);
     }); 
@@ -56,9 +97,20 @@ class Home extends PureComponent {
     );
   }
 
-  render() {
-    const { lounges } = this.props;
+  renderLoungeStatus = loungeId => {
+    if (!this.isLoungeActive(loungeId)) return null;
 
+    return (
+      <Text
+        alignSelf='center'
+        color='green'
+      >
+        Active
+      </Text>
+    );
+  }
+
+  render() {
     return (
       <ThemeProvider theme={preset}>
         <Flex
@@ -89,7 +141,7 @@ class Home extends PureComponent {
               Create new lounge
             </Button>
           </Flex>
-          {this.renderLoungeList(lounges)}
+          {this.renderLoungeList()}
         </Flex>
       </ThemeProvider>
     );

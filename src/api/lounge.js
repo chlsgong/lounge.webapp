@@ -4,7 +4,11 @@ import { createInstance, createPostRequest, createGetRequest } from '../utils/ap
 const lounge = {
   url: config.server.URL,
   user: '/user',
-  lounge: '/lounge',
+  lounge: {
+    base: '/lounge',
+    open: '/lounge/open',
+    close: '/lounge/close',
+  },
 };
 
 const loungeInstance = createInstance({ baseURL: lounge.url });
@@ -39,7 +43,7 @@ export const createUser = spotifyId => {
 export const createLounge = ({ hostId, name, code, refreshToken }) => {
   return createPostRequest(
     {
-      url: lounge.lounge,
+      url: lounge.lounge.base,
       body: {
         host_id: hostId,
         name: name,
@@ -51,3 +55,28 @@ export const createLounge = ({ hostId, name, code, refreshToken }) => {
   );
 };
 
+export const openLounge = ({ userId, loungeId }) => {
+  return createPostRequest(
+    {
+      url: lounge.lounge.open,
+      body: {
+        user_id: userId,
+        lounge_id: loungeId,
+      },
+    },
+    loungeInstance,
+  )
+};
+
+export const closeLounge = ({ userId, loungeId }) => {
+  return createPostRequest(
+    {
+      url: lounge.lounge.close,
+      body: {
+        user_id: userId,
+        lounge_id: loungeId,
+      }
+    },
+    loungeInstance
+  )
+};
