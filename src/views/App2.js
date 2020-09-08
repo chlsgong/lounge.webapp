@@ -8,10 +8,23 @@ import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 import { getSpotifyAuthorize } from '../api/spotify';
 
 import Home from './Home';
+import Join from './Join';
 
 class App2 extends PureComponent {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      isJoinViewActive: false,
+    };
+  }
+
   onLoginWithSpotify = () => {
     window.location.href = getSpotifyAuthorize();
+  }
+
+  onJoinLounge = () => {
+    this.setState({ isJoinViewActive: true });
   }
 
   render() {
@@ -19,9 +32,12 @@ class App2 extends PureComponent {
 
     if (isLoggedIn) {
       return (
-        <ThemeProvider theme={preset}>
-          <Home />
-        </ThemeProvider>
+        <Home />
+      );
+    }
+    else if (this.state.isJoinViewActive) {
+      return (
+        <Join />
       );
     }
 
@@ -62,7 +78,7 @@ class App2 extends PureComponent {
                 }
               }}
               variant='secondary'
-              onClick={() => null}
+              onClick={this.onJoinLounge}
             >
               Join a Lounge room
             </Button>
