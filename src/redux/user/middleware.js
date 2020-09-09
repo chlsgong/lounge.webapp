@@ -18,7 +18,7 @@ const handleGetSpotifyProfileSuccess = store => {
 // };
 
 const handleGetLoungeUserFailure = (store, payload) => {
-  const { reason } = payload;
+  const reason = payload?.reason;
   if (reason === 'spotifyUserNotFound') {
     const state = store.getState();
     const spotifyId = selectSpotifyId(state);

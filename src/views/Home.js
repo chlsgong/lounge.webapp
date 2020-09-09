@@ -8,7 +8,7 @@ import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
 class Home extends PureComponent {
   isLoungeActive = loungeId => {
-    const activeLoungeId = this.props.activeLounge.loungeId;
+    const { activeLoungeId } = this.props;
     return loungeId === activeLoungeId;
   }
 
@@ -136,7 +136,7 @@ class Home extends PureComponent {
                 }
               }}
               variant='secondary'
-              onClick={this.onCreateLounge}
+              onClick={this.onCreateLoungeButtonClick}
             >
               Create new lounge
             </Button>

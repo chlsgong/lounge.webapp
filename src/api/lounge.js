@@ -8,6 +8,7 @@ const lounge = {
     base: '/lounge',
     open: '/lounge/open',
     close: '/lounge/close',
+    join: '/lounge/join',
   },
 };
 
@@ -55,6 +56,20 @@ export const createLounge = ({ hostId, name, code, refreshToken }) => {
   );
 };
 
+export const getLounge = loungeId => {
+  return createGetRequest(
+    {
+      url: lounge.lounge.base,
+      config: {
+        params: {
+          lounge_id: loungeId,
+        },
+      },
+    },
+    loungeInstance,
+  );
+};
+
 export const openLounge = ({ userId, loungeId }) => {
   return createPostRequest(
     {
@@ -77,6 +92,20 @@ export const closeLounge = ({ userId, loungeId }) => {
         lounge_id: loungeId,
       }
     },
-    loungeInstance
+    loungeInstance,
+  )
+};
+
+export const joinLounge = code => {
+  return createGetRequest(
+    {
+      url: lounge.lounge.join,
+      config: {
+        params: {
+          code: code,
+        },
+      },
+    },
+    loungeInstance,
   )
 };

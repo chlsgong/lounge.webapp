@@ -18,6 +18,7 @@ const spotify = {
       me: '/v1/me',
       player: '/v1/me/player',
       queue: '/v1/me/player/queue',
+      search: '/v1/search',
     },
   },
 };
@@ -57,12 +58,49 @@ export const postSpotifyToken = code => {
   );
 };
 
+export const postRefreshSpotifyToken = refreshToken => {
+  const encodedString = btoa('16efad44cfd54e3ea050d602af68eadd:10f26b66944143449acf95adcc4074bb');
+
+  return createPostRequest(
+    {
+      url: spotify.accounts.api.token,
+      body: qs.stringify({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      }),
+      config: {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Basic ${encodedString}`,
+        },
+      },
+    },
+    spotifyAccounts,
+  );
+};
+
 export const getSpotifyUserProfile = token => {
   return createGetRequest(
     {
       url: spotify.api.v1.me,
       config: {
         headers: getAuthHeader(token),
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const querySpotify = (token, queryString) => {
+  return createGetRequest(
+    {
+      url: spotify.api.v1.search,
+      config: {
+        headers: getAuthHeader(token),
+        params: {
+          q: encodeURI(queryString),
+          type: 'track',
+        },
       },
     },
     spotifyAPI,
