@@ -106,3 +106,18 @@ export const querySpotify = (token, queryString) => {
     spotifyAPI,
   );
 };
+
+export const postAddToSpotifyQueue = (token, uri) => {
+  return createPostRequest(
+    {
+      url: spotify.api.v1.queue,
+      config: {
+        headers: getAuthHeader(token),
+        params: {
+          uri
+        },
+      },
+    },
+    spotifyAPI,
+  );
+};
