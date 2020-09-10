@@ -23,8 +23,9 @@ class SpotifySearch extends PureComponent {
   }
 
   onSearchSpotify = () => {
-    if (this.state.queryString) {
-      this.props.querySpotify(this.state.queryString);
+    const { queryString } = this.state;
+    if (queryString) {
+      this.props.querySpotify(queryString);
     }
   }
 
