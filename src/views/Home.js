@@ -31,16 +31,19 @@ class Home extends PureComponent {
     }
   }
 
-  onLoungeButtonClick = loungeId => {
-    if (this.isLoungeActive(loungeId)) {
-      this.props.closeLounge(loungeId);
-    }
-    else {
-      this.props.openLounge(loungeId);
-    } 
+  onCloseLounge = () => {
+    const { activeLoungeId } = this.props;
+    this.props.closeLounge(activeLoungeId);
+    this.setState({ hasJoinedLounge: false });
   }
 
-  onJoinLounge = () => {
+  onOpenLounge = loungeId => {
+    this.props.openLounge(loungeId);
+    this.setState({ hasJoinedLounge: true });
+  }
+
+  onJoinLounge = loungeId => {
+    this.props.getLounge(loungeId);
     this.setState({ hasJoinedLounge: true });
   }
 
@@ -50,10 +53,15 @@ class Home extends PureComponent {
   }
 
   renderLoungeButton = loungeId => {
-    const text = this.isLoungeActive(loungeId) ? 'Close' : 'Open';
+    const isLoungeActive = this.isLoungeActive(loungeId);
+    const text = isLoungeActive ? 'Join' : 'Open';
     const { activeLoungeId } = this.props;
-    const disabled = activeLoungeId && !this.isLoungeActive(loungeId);
+    const disabled = activeLoungeId && !isLoungeActive;
     const variant = disabled ? 'disabled' : 'secondary';
+    let action = () => this.onOpenLounge(loungeId);
+    if (isLoungeActive) {
+      action = () => this.onJoinLounge(loungeId);
+    }
 
     return (
       <Flex
@@ -63,15 +71,9 @@ class Home extends PureComponent {
         <Button
           variant={variant}
           disabled={disabled}
-          onClick={() => this.onLoungeButtonClick(loungeId)}
+          onClick={action}
         >
           {text}
-        </Button>
-        <Button
-          variant='secondary'
-          onClick={this.onJoinLounge}
-        >
-          Join
         </Button>
       </Flex>
     );
@@ -146,7 +148,11 @@ class Home extends PureComponent {
 
   render() {
     if (this.state.hasJoinedLounge) {
-      return <LoungeRoom />;
+      return (
+        <LoungeRoom
+          onCloseLounge={this.onCloseLounge}
+        />
+      );
     }
 
     return (

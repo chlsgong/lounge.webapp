@@ -2,7 +2,6 @@
 
 # Features
 - Add player
-- Add host search
 - Remove code from lounges and add to active lounges
 - DB middlewares
 - Convert lodash get to optional chaining

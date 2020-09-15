@@ -1,4 +1,4 @@
-import { createLoungeRoom, joinLoungeRoom, getLoungeRoom } from './actions';
+import { createLoungeRoom, joinLoungeRoom, getLoungeRoom, openLoungeRoom } from './actions';
 import { selectActiveLoungeRoomId } from './selectors';
 import { refreshSpotifyToken } from '../auth/actions';
 import { requestLoungeUser } from '../user/actions';
@@ -21,10 +21,16 @@ const handleGetLoungeRoomSuccess = store => {
   store.dispatch(refreshSpotifyToken());
 };
 
+const handleOpenLoungeRoomSuccess = (store, payload) => {
+  const loungeId = payload?.loungeId;
+  store.dispatch(getLoungeRoom(loungeId));
+};
+
 const actionMap = createActionMap({
   [createLoungeRoom.fulfilled]: handleCreateLoungeRoomSuccess,
   [joinLoungeRoom.fulfilled]: handleJoinLoungeRoomSuccess,
   [getLoungeRoom.fulfilled]: handleGetLoungeRoomSuccess,
+  [openLoungeRoom.fulfilled]: handleOpenLoungeRoomSuccess,
 });
 
 const loungeMiddleware = store => next => action => {
