@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { selectActiveLoungeAccessToken } from '../lounge/selectors';
-import { querySpotify, postAddToSpotifyQueue } from '../../api/spotify';
+import { querySpotify, postAddToSpotifyQueue, transferPlayback } from '../../api/spotify';
 
 export const querySpotifyCatalog = createAsyncThunk(
   'spotify/querySpotifyCatalog',
@@ -27,6 +27,23 @@ export const addToSpotifyQueue = createAsyncThunk(
       const state = thunkAPI.getState();
       const accessToken = selectActiveLoungeAccessToken(state);
       const response = await postAddToSpotifyQueue(accessToken, uri);
+      console.log('Response', response);
+      return response.data;
+    }
+    catch(error) {
+      console.log('Error', error.response);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const transferSpotifyPlayback = createAsyncThunk(
+  'spotify/transferSpotifyPlayback',
+  async ({ deviceId, autoPlay }, thunkAPI) => {
+    try {
+      const state = thunkAPI.getState();
+      const accessToken = selectActiveLoungeAccessToken(state);
+      const response = await transferPlayback(accessToken, deviceId, autoPlay);
       console.log('Response', response);
       return response.data;
     }

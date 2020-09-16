@@ -1,7 +1,7 @@
 import qs from 'qs';
 
 import config from '../config';
-import { createInstance, createPostRequest, createGetRequest, getAuthHeader } from '../utils/api';
+import { createInstance, createPostRequest, createGetRequest, createPutRequest, getAuthHeader } from '../utils/api';
 import { createURLQuery } from '../utils/url';
 
 const spotify = {
@@ -116,6 +116,22 @@ export const postAddToSpotifyQueue = (token, uri) => {
         params: {
           uri
         },
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const transferPlayback = (token, deviceId, autoPlay) => {
+  return createPutRequest(
+    {
+      url: spotify.api.v1.player,
+      body: {
+        device_ids: [ deviceId ],
+        play: autoPlay,
+      },
+      config: {
+        headers: getAuthHeader(token),
       },
     },
     spotifyAPI,

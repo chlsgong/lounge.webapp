@@ -1,7 +1,8 @@
 ### TODO list
 
 # Features
-- Add player
+- Create player redux slice
+- Move player to middleware
 - Remove code from lounges and add to active lounges
 - DB middlewares
 - Convert lodash get to optional chaining

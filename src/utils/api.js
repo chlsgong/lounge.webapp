@@ -10,6 +10,10 @@ export const createGetRequest = ({ url, config }, instance = axios) => {
   return instance.get(url, config);
 };
 
+export const createPutRequest = ({ url, body, config }, instance = axios) => {
+  return instance.put(url, body, config);
+};
+
 export const getAuthHeader = token => {
   return { 'Authorization': `Bearer ${token}` };
 };
