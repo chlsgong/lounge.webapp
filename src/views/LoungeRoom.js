@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { Flex, Button, Image } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
+import { Play, Pause, ChapterNext, ChapterPrevious } from 'grommet-icons';
 import preset from '@rebass/preset'
 import _ from 'lodash';
 
@@ -42,7 +43,7 @@ class LoungeRoom extends PureComponent {
 
       // create the player
       this.player = new window.Spotify.Player({
-        name: 'Lounge Player',
+        name: 'Lounge Player', // TODO: change player name to lounge room name
         getOAuthToken: callback => callback(accessToken),
       });
       this.createEventHandlers();
@@ -112,20 +113,33 @@ class LoungeRoom extends PureComponent {
     }
   }
 
-  transferPlaybackHere() {
-    const { deviceId, auth } = this.state;
+  onPlay = () => {
+    this.player.togglePlay();
+  }
 
-    fetch("https://api.spotify.com/v1/me/player", {
-      method: "PUT",
-      headers: {
-        authorization: `Bearer ${auth.access_token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        "device_ids": [ deviceId ],
-        "play": false, // TODO: change this back to 'true'
-      }),
-    });
+  onPrev = () => {
+    this.player.previousTrack();
+  }
+
+  onNext = () => {
+    this.player.nextTrack();
+  }
+
+  getPlayIcon = () => {
+    const play = (
+      <Play
+        color='white'
+        size='24px'
+      />
+    );
+    const pause = (
+      <Pause
+        color='white'
+        size='24px'
+      />
+    );
+
+    return this.state.playing ? pause : play;
   }
 
   renderCloseRoomButton = () => {
@@ -145,6 +159,18 @@ class LoungeRoom extends PureComponent {
     );
   }
 
+  renderPlayerButton = (icon, onClick) => {
+    return (
+      <Button
+        mx={2}
+        bg='primary'
+        onClick={onClick}
+      >
+        {icon}
+      </Button>
+    );
+  }
+
   renderSpotifyPlayer = () => {
     const { albumImage } = this.state;
 
@@ -159,6 +185,29 @@ class LoungeRoom extends PureComponent {
           width={albumImage?.width}
           height={albumImage?.height}
         />
+        <Flex
+          flexDirection='row'
+          mt={2}
+        >
+          {this.renderPlayerButton(
+            <ChapterPrevious
+              color='white'
+              size='24px'
+            />,
+            this.onPrev
+          )}
+           {this.renderPlayerButton(
+            this.getPlayIcon(),
+            this.onPlay
+          )}
+          {this.renderPlayerButton(
+            <ChapterNext
+              color='white'
+              size='24px'
+            />,
+            this.onNext
+          )}
+        </Flex>
       </Flex>
     );
   }

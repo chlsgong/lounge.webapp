@@ -13,7 +13,7 @@ import Join from './Join';
 class App2 extends PureComponent {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       isJoinViewActive: false,
     };
