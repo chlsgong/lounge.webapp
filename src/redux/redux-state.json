@@ -1,0 +1,34 @@
+{
+  "state": {
+    "login": {
+      "isLoggedIn": false
+    },
+    "auth": {
+      "accessToken":"",
+      "tokenType": "",
+      "expiresIn": 0,
+      "refreshToken": "",
+      "scope": "",
+      "error": null
+    },
+    "user": {
+      "id": "",
+      "spotify": {}
+    },
+    "lounge": {
+      "rooms": [],
+      "activeRoom": {
+        "id": "",
+        "loungeId": "",
+        "hostId": "",
+        "name": "",
+        "code": ""
+      },
+      "isJoining": false,
+      "errorJoining": false
+    },
+    "spotify": {
+      "searchResults": []
+    }
+  }
+}

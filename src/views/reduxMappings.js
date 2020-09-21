@@ -9,6 +9,7 @@ import {
   selectActiveLoungeRoomName
 } from '../redux/lounge/selectors';
 import { selectSpotifySearchResults } from '../redux/spotify/selectors';
+import { logout } from '../redux/login/actions';
 import { createLoungeRoom, openLoungeRoom, closeLoungeRoom, joinLoungeRoom, getLoungeRoom } from '../redux/lounge/actions';
 import { querySpotifyCatalog, addToSpotifyQueue, transferSpotifyPlayback } from '../redux/spotify/actions';
 
@@ -33,4 +34,5 @@ export const mapDispatchToProps = dispatch => ({
   querySpotify: queryString => dispatch(querySpotifyCatalog(queryString)),
   addToQueue: uri => dispatch(addToSpotifyQueue(uri)),
   transferPlayback: params => dispatch(transferSpotifyPlayback(params)),
+  logout: _ => dispatch(logout()),
 });

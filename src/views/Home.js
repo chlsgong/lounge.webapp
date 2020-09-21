@@ -8,6 +8,7 @@ import preset from '@rebass/preset'
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
 import LoungeRoom from './LoungeRoom';
+import Join from './Join';
 
 class Home extends PureComponent {
   constructor(props) {
@@ -16,7 +17,14 @@ class Home extends PureComponent {
     this.state = {
       loungeName: '',
       hasJoinedLounge: false,
+      isJoinViewActive: false,
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.activeLoungeId && this.props.activeLoungeId) {
+      this.onJoinLounge(this.props.activeLoungeId);
+    }
   }
 
   isLoungeActive = loungeId => {
@@ -47,11 +55,16 @@ class Home extends PureComponent {
     this.setState({ hasJoinedLounge: true });
   }
 
+  onSearchLounge = () => {
+    this.setState({ isJoinViewActive: true });
+  }
+
   onLoungeNameChange = event => {
     const loungeName = event.target.value;
     this.setState({ loungeName });
   }
 
+  // TODO: clean up, no join button
   renderLoungeButton = loungeId => {
     const isLoungeActive = this.isLoungeActive(loungeId);
     const text = isLoungeActive ? 'Join' : 'Open';
@@ -147,7 +160,11 @@ class Home extends PureComponent {
   }
 
   render() {
-    if (this.state.hasJoinedLounge) {
+    if (this.state.isJoinViewActive) {
+      return (
+        <Join />
+      );
+    } else if (this.state.hasJoinedLounge) {
       return (
         <LoungeRoom
           onCloseLounge={this.onCloseLounge}
@@ -161,6 +178,17 @@ class Home extends PureComponent {
           flexDirection='column'
           alignItems='center'
         >
+          <Flex
+            alignSelf='stretch'
+            mb={3}
+          >
+            <Button onClick={this.onSearchLounge}>
+              Join a Lounge room
+            </Button>
+            <Button onClick={this.props.logout}>
+              Logout
+            </Button>
+          </Flex>
           <Heading
             textAlign='center'
             variant='display'
