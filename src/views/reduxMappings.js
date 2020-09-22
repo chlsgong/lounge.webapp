@@ -8,7 +8,7 @@ import {
   selectActiveLoungeRoomId,
   selectActiveLoungeRoomName
 } from '../redux/lounge/selectors';
-import { selectSpotifySearchResults } from '../redux/spotify/selectors';
+import { selectTrackSearchResults, selectAlbumSearchResults, selectArtistSearchResults } from '../redux/spotify/selectors';
 import { logout } from '../redux/login/actions';
 import { createLoungeRoom, openLoungeRoom, closeLoungeRoom, joinLoungeRoom, getLoungeRoom } from '../redux/lounge/actions';
 import { querySpotifyCatalog, addToSpotifyQueue, transferSpotifyPlayback } from '../redux/spotify/actions';
@@ -21,7 +21,9 @@ export const mapStateToProps = state => ({
   activeLoungeName: selectActiveLoungeRoomName(state),
   isJoining: selectIsJoiningLounge(state),
   errorJoining: selectErrorJoining(state),
-  searchResults: selectSpotifySearchResults(state),
+  trackSearchResults: selectTrackSearchResults(state),
+  albumSearchResults: selectAlbumSearchResults(state),
+  artistSearchResults: selectArtistSearchResults(state),
   accessToken: selectAccessToken(state),
 });
 
@@ -31,7 +33,7 @@ export const mapDispatchToProps = dispatch => ({
   closeLounge: loungeId => dispatch(closeLoungeRoom(loungeId)),
   getLounge: loungeId => dispatch(getLoungeRoom(loungeId)),
   joinLounge: code => dispatch(joinLoungeRoom(code)),
-  querySpotify: queryString => dispatch(querySpotifyCatalog(queryString)),
+  querySpotify: queryString => dispatch(querySpotifyCatalog({ queryString, limit: 6 })),
   addToQueue: uri => dispatch(addToSpotifyQueue(uri)),
   transferPlayback: params => dispatch(transferSpotifyPlayback(params)),
   logout: _ => dispatch(logout()),

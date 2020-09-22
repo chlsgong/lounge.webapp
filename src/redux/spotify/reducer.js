@@ -3,7 +3,11 @@ import { querySpotifyCatalog } from './actions';
 // Spotify reducer
 
 export const initialState = {
-  searchResults: [],
+  searchResults: {
+    tracks: [],
+    albums: [],
+    artists: [],
+  },
 };
 
 export const extraReducer = {
@@ -11,7 +15,11 @@ export const extraReducer = {
     const { payload } = action;
     return {
       ...state,
-      searchResults: payload?.tracks?.items,
+      searchResults: {
+        tracks: payload?.tracks?.items || [],
+        albums: payload?.albums?.items || [],
+        artists: payload?.artists?.items || [],
+      }
     };
   },
 };

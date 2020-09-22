@@ -5,11 +5,11 @@ import { querySpotify, postAddToSpotifyQueue, transferPlayback } from '../../api
 
 export const querySpotifyCatalog = createAsyncThunk(
   'spotify/querySpotifyCatalog',
-  async (queryString, thunkAPI) => {
+  async ({ queryString, limit }, thunkAPI) => {
     try {
       const state = thunkAPI.getState();
       const accessToken = selectActiveLoungeAccessToken(state);
-      const response = await querySpotify(accessToken, queryString);
+      const response = await querySpotify(accessToken, queryString, limit);
       console.log('Response', response);
       return response.data;
     }

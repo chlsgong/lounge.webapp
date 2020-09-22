@@ -49,10 +49,10 @@ class SpotifySearch extends PureComponent {
     );
   }
 
-  renderSearchResultsItem = (searchResult, index) => {
-    const album = searchResult?.album;
-    const name = searchResult?.name;
-    const uri = searchResult?.uri;
+  renderTrackSearchResultsItem = (item, index) => {
+    const album = item?.album;
+    const name = item?.name;
+    const uri = item?.uri;
     const albumName = album?.name;
     const artists = album?.artists || [];
     let artistNames = '';
@@ -121,19 +121,31 @@ class SpotifySearch extends PureComponent {
     );
   }
 
-  renderSearchResults = () => {
-    const { searchResults } = this.props;
-    const searchResultItems = searchResults.map((item, index) => {
-      return this.renderSearchResultsItem(item, index);
-    }); 
+  renderTrackSearchResults = () => {
+    const { trackSearchResults } = this.props;
+    const searchResultItems = trackSearchResults.map((item, index) => {
+      return this.renderTrackSearchResultsItem(item, index);
+    });
+    const isResultsEmpty = _.isEmpty(trackSearchResults);
 
     return (
       <Flex
         flexDirection='column'
         bg='gray'
       >
+        {this.renderListHeader('Songs', isResultsEmpty)}
         {searchResultItems}
       </Flex>
+    );
+  }
+
+  renderListHeader = (title, hidden) => {
+    if (hidden) return null;
+
+    return (
+      <Heading variant='listHeader'>
+        {title}
+      </Heading>
     );
   }
 
@@ -185,7 +197,7 @@ class SpotifySearch extends PureComponent {
             width={1}
             pt={5}
           >
-            {this.renderSearchResults()}
+            {this.renderTrackSearchResults()}
           </Flex>
         </Flex>
       </ThemeProvider>

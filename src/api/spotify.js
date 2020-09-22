@@ -91,7 +91,7 @@ export const getSpotifyUserProfile = token => {
   );
 };
 
-export const querySpotify = (token, queryString) => {
+export const querySpotify = (token, queryString, limit) => {
   return createGetRequest(
     {
       url: spotify.api.v1.search,
@@ -99,7 +99,9 @@ export const querySpotify = (token, queryString) => {
         headers: getAuthHeader(token),
         params: {
           q: encodeURI(queryString),
-          type: 'track',
+          type: 'track,album,artist',
+          limit: limit,
+          // offset: offset,
         },
       },
     },
