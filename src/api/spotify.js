@@ -98,7 +98,7 @@ export const querySpotify = (token, queryString, limit) => {
       config: {
         headers: getAuthHeader(token),
         params: {
-          q: encodeURI(queryString),
+          q: queryString,
           type: 'track,album,artist',
           limit: limit,
           // offset: offset,

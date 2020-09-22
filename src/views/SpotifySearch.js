@@ -139,6 +139,156 @@ class SpotifySearch extends PureComponent {
     );
   }
 
+  renderArtistSearchResultsItem = (item, index) => {
+    const name = item?.name;
+    // const uri = item?.uri;
+    const images = item?.images;
+    const imageUrl = _.get(images, '[1].url');
+    const imageWidth = _.get(images, '[1].width');
+    const imageHeight = _.get(images, '[1].height');
+
+    // _.first(currentTrack?.album?.images)?.url;
+
+    return (
+      <Flex
+        key={index}
+        flexDirection='row'
+        alignItems='stretch'
+        justifyContent='space-between'
+        height={imageHeight}
+        px={3}
+        sx={{
+          borderTop: 'solid',
+          borderWidth: 1,
+        }}
+      >
+        <Flex
+          flexDirection='row'
+          alignItems='stretch'
+          justifyContent='center'
+          ml={-16}
+        >
+          <Image
+            src={imageUrl}
+            width={imageWidth}
+            height={imageHeight}
+          />
+          <Flex
+            flexDirection='column'
+            justifyContent='space-evenly'
+            mx={2}
+          >
+            <Text
+              fontSize={4}
+              color='secondary'
+            >
+              {name}
+            </Text>
+          </Flex>
+        </Flex>
+      </Flex>
+    );
+  }
+
+  renderArtistSearchResults = () => {
+    const { artistSearchResults } = this.props;
+    const searchResultItems = artistSearchResults.map((item, index) => {
+      return this.renderArtistSearchResultsItem(item, index);
+    });
+    const isResultsEmpty = _.isEmpty(artistSearchResults);
+
+    return (
+      <Flex
+        flexDirection='column'
+        bg='gray'
+      >
+        {this.renderListHeader('Artists', isResultsEmpty)}
+        {searchResultItems}
+      </Flex>
+    );
+  }
+
+  renderAlbumSearchResultsItem = (item, index) => {
+    const name = item?.name;
+    // const uri = item?.uri;
+    const artists = item?.artists || [];
+    let artistNames = '';
+    artists.forEach(artist => {
+      artistNames = artistNames.concat(artist.name, ' ');
+    });
+    artistNames.trim();
+    const images = item?.images;
+    const imageUrl = _.get(images, '[1].url');
+    const imageWidth = _.get(images, '[1].width');
+    const imageHeight = _.get(images, '[1].height');
+
+    // _.first(currentTrack?.album?.images)?.url;
+
+    return (
+      <Flex
+        key={index}
+        flexDirection='row'
+        alignItems='stretch'
+        justifyContent='space-between'
+        height={imageHeight}
+        px={3}
+        sx={{
+          borderTop: 'solid',
+          borderWidth: 1,
+        }}
+      >
+        <Flex
+          flexDirection='row'
+          alignItems='stretch'
+          justifyContent='center'
+          ml={-16}
+        >
+          <Image
+            src={imageUrl}
+            width={imageWidth}
+            height={imageHeight}
+          />
+          <Flex
+            flexDirection='column'
+            justifyContent='space-evenly'
+            mx={2}
+          >
+            <Text
+              fontSize={4}
+              color='secondary'
+            >
+              {name}
+            </Text>
+            <Text
+              fontSize={2}
+              color='secondary'
+            >
+              {artistNames}
+            </Text>
+          </Flex>
+        </Flex>
+      </Flex>
+    );
+  }
+
+  renderAlbumSearchResults = () => {
+    const { albumSearchResults } = this.props;
+    const searchResultItems = albumSearchResults.map((item, index) => {
+      return this.renderAlbumSearchResultsItem(item, index);
+    });
+    const isResultsEmpty = _.isEmpty(albumSearchResults);
+
+    return (
+      <Flex
+        flexDirection='column'
+        bg='gray'
+      >
+        {this.renderListHeader('Albums', isResultsEmpty)}
+        {searchResultItems}
+      </Flex>
+    );
+  }
+
   renderListHeader = (title, hidden) => {
     if (hidden) return null;
 
@@ -198,6 +348,8 @@ class SpotifySearch extends PureComponent {
             pt={5}
           >
             {this.renderTrackSearchResults()}
+            {this.renderArtistSearchResults()}
+            {this.renderAlbumSearchResults()}
           </Flex>
         </Flex>
       </ThemeProvider>
