@@ -33,8 +33,15 @@ class LoungeRoom extends PureComponent {
     this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
   }
 
+  componentWillUnmount() {
+    if (this.state.playing) {
+      this.player.togglePlay();
+      // TODO: don't update state
+    }
+  }
+
   checkForPlayer() {
-    if (window.Spotify !== null) {
+    if (window.Spotify !== null && !this.player) {
       // cancel the interval
       clearInterval(this.playerCheckInterval);
 

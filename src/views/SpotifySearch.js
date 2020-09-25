@@ -33,6 +33,14 @@ class SpotifySearch extends PureComponent {
     this.props.addToQueue(uri);
   }
 
+  onGoToArtist = id => {
+
+  }
+
+  onOpenAlbum = id => {
+    
+  }
+
   renderAddToQueueButton = uri => {
     return (
       <Flex
@@ -44,6 +52,38 @@ class SpotifySearch extends PureComponent {
           onClick={() => this.onAddToQueue(uri)}
         >
           Add to Queue
+        </Button>
+      </Flex>
+    );
+  }
+
+  renderArtistDetailsButton = id => {
+    return (
+      <Flex
+        alignItems='center'
+        justifyContent='center'
+      >
+        <Button
+          variant='secondary'
+          onClick={() => null}
+        >
+          Go to Page
+        </Button>
+      </Flex>
+    );
+  }
+
+  renderAlbumDetailsButton = id => {
+    return (
+      <Flex
+        alignItems='center'
+        justifyContent='center'
+      >
+        <Button
+          variant='secondary'
+          onClick={() => null}
+        >
+          Open Album
         </Button>
       </Flex>
     );
@@ -141,7 +181,7 @@ class SpotifySearch extends PureComponent {
 
   renderArtistSearchResultsItem = (item, index) => {
     const name = item?.name;
-    // const uri = item?.uri;
+    const id = item?.id;
     const images = item?.images;
     const imageUrl = _.get(images, '[1].url');
     const imageWidth = _.get(images, '[1].width');
@@ -186,6 +226,7 @@ class SpotifySearch extends PureComponent {
             </Text>
           </Flex>
         </Flex>
+        {this.renderArtistDetailsButton(id)}
       </Flex>
     );
   }
@@ -210,7 +251,7 @@ class SpotifySearch extends PureComponent {
 
   renderAlbumSearchResultsItem = (item, index) => {
     const name = item?.name;
-    // const uri = item?.uri;
+    const id = item?.id;
     const artists = item?.artists || [];
     let artistNames = '';
     artists.forEach(artist => {
@@ -267,6 +308,7 @@ class SpotifySearch extends PureComponent {
             </Text>
           </Flex>
         </Flex>
+        {this.renderAlbumDetailsButton(id)}
       </Flex>
     );
   }
