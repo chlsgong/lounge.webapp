@@ -1,40 +1,15 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { Flex, Heading, Image, Button, Text } from 'rebass';
-import { Input } from '@rebass/forms';
 import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 import _ from 'lodash';
 
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
-class SpotifySearch extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      queryString: '',
-    };
-  }
-
-  onQueryStringChange = event => {
-    const queryString = event.target.value;
-    this.setState({ queryString });
-  }
-
-  onSearchSpotify = () => {
-    const { queryString } = this.state;
-    if (queryString) {
-      this.props.querySpotify(queryString);
-    }
-  }
-
+class Artist extends PureComponent {
   onAddToQueue = uri => {
     this.props.addToQueue(uri);
-  }
-
-  onGoToArtist = id => {
-    this.props.getSpotifyArtist(id);
   }
 
   onOpenAlbum = id => {
@@ -57,22 +32,6 @@ class SpotifySearch extends PureComponent {
     );
   }
 
-  renderArtistDetailsButton = id => {
-    return (
-      <Flex
-        alignItems='center'
-        justifyContent='center'
-      >
-        <Button
-          variant='secondary'
-          onClick={() => this.onGoToArtist(id)}
-        >
-          Go to Page
-        </Button>
-      </Flex>
-    );
-  }
-
   renderAlbumDetailsButton = id => {
     return (
       <Flex
@@ -89,7 +48,7 @@ class SpotifySearch extends PureComponent {
     );
   }
 
-  renderTrackSearchResultsItem = (item, index) => {
+  renderTopTracksItem = (item, index) => {
     const album = item?.album;
     const name = item?.name;
     const uri = item?.uri;
@@ -161,7 +120,7 @@ class SpotifySearch extends PureComponent {
     );
   }
 
-  renderTrackSearchResults = () => {
+  renderTopTracks = () => {
     const { trackSearchResults } = this.props;
     const searchResultItems = trackSearchResults.map((item, index) => {
       return this.renderTrackSearchResultsItem(item, index);
@@ -173,83 +132,13 @@ class SpotifySearch extends PureComponent {
         flexDirection='column'
         bg='gray'
       >
-        {this.renderListHeader('Songs', isResultsEmpty)}
+        {this.renderListHeader('Top songs', isResultsEmpty)}
         {searchResultItems}
       </Flex>
     );
   }
 
-  renderArtistSearchResultsItem = (item, index) => {
-    const name = item?.name;
-    const id = item?.id;
-    const images = item?.images;
-    const imageUrl = _.get(images, '[1].url');
-    const imageWidth = _.get(images, '[1].width');
-    const imageHeight = _.get(images, '[1].height');
-
-    // _.first(currentTrack?.album?.images)?.url;
-
-    return (
-      <Flex
-        key={index}
-        flexDirection='row'
-        alignItems='stretch'
-        justifyContent='space-between'
-        height={imageHeight}
-        px={3}
-        sx={{
-          borderTop: 'solid',
-          borderWidth: 1,
-        }}
-      >
-        <Flex
-          flexDirection='row'
-          alignItems='stretch'
-          justifyContent='center'
-          ml={-16}
-        >
-          <Image
-            src={imageUrl}
-            width={imageWidth}
-            height={imageHeight}
-          />
-          <Flex
-            flexDirection='column'
-            justifyContent='space-evenly'
-            mx={2}
-          >
-            <Text
-              fontSize={4}
-              color='secondary'
-            >
-              {name}
-            </Text>
-          </Flex>
-        </Flex>
-        {this.renderArtistDetailsButton(id)}
-      </Flex>
-    );
-  }
-
-  renderArtistSearchResults = () => {
-    const { artistSearchResults } = this.props;
-    const searchResultItems = artistSearchResults.map((item, index) => {
-      return this.renderArtistSearchResultsItem(item, index);
-    });
-    const isResultsEmpty = _.isEmpty(artistSearchResults);
-
-    return (
-      <Flex
-        flexDirection='column'
-        bg='gray'
-      >
-        {this.renderListHeader('Artists', isResultsEmpty)}
-        {searchResultItems}
-      </Flex>
-    );
-  }
-
-  renderAlbumSearchResultsItem = (item, index) => {
+  renderAlbumsItem = (item, index) => {
     const name = item?.name;
     const id = item?.id;
     const artists = item?.artists || [];
@@ -313,7 +202,7 @@ class SpotifySearch extends PureComponent {
     );
   }
 
-  renderAlbumSearchResults = () => {
+  renderAlbums = () => {
     const { albumSearchResults } = this.props;
     const searchResultItems = albumSearchResults.map((item, index) => {
       return this.renderAlbumSearchResultsItem(item, index);
@@ -353,45 +242,16 @@ class SpotifySearch extends PureComponent {
             textAlign='center'
             p={5}
           >
-            {this.props.activeLoungeName}
+            {this.props.artistName}
           </Heading>
-          <Input
-            id='spotify'
-            name='spotify'
-            type='text'
-            placeholder='Song, album, or artist'
-            width={0.25}
-            bg='white'
-            textAlign='center'
-            onChange={this.onQueryStringChange}
-          />
-          <Button
-            my={2}
-            width={0.25}
-            sx={{
-              ':hover': {
-                ...preset.buttons.primary,
-              }
-            }}
-            variant='secondary'
-            onClick={this.onSearchSpotify}
-          >
-            Search
-          </Button>
-          {/* <Text
-            my={2}
-          >
-            {this.getStatus()}
-          </Text> */}
           <Flex
             flexDirection='column'
             alignItems='stretch'
             width={1}
             pt={5}
           >
-            {this.renderTrackSearchResults()}
-            {this.renderArtistSearchResults()}
-            {this.renderAlbumSearchResults()}
+            {this.renderTopTracks()}
+            {this.renderAlbums()}
           </Flex>
         </Flex>
       </ThemeProvider>
@@ -399,4 +259,4 @@ class SpotifySearch extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SpotifySearch);
+export default connect(mapStateToProps, mapDispatchToProps)(Artist);
