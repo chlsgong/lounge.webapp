@@ -86,6 +86,7 @@ export const extraReducer = {
         hostId: payload?.hostId,
         name: payload?.name,
         auth: payload?.auth,
+        code: payload?.code,
       },
     };
   },

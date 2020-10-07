@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
-import { Flex, Button, Image } from 'rebass';
+import { Flex, Button, Image, Heading } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import { Play, Pause, ChapterNext, ChapterPrevious } from 'grommet-icons';
 import preset from '@rebass/preset'
@@ -232,6 +232,20 @@ class LoungeRoom extends PureComponent {
     );
   }
 
+  renderLoungeCodeLabel = () => {
+    const { code } = this.props.activeLounge;
+
+    return (
+      <Heading
+        variant='display'
+        textAlign='center'
+        p={5}
+      >
+        {code}
+      </Heading>
+    )
+  }
+
   render() {
     if (this.state.isArtistSelected) {
       return <Artist />;
@@ -245,6 +259,7 @@ class LoungeRoom extends PureComponent {
       <ThemeProvider theme={preset}>
         <Flex flexDirection='column'>
           {this.renderCloseRoomButton()}
+          {this.renderLoungeCodeLabel()}
           {this.renderSpotifyPlayer()}
           <SpotifySearch
             onArtistSelected={this.onArtistSelected}

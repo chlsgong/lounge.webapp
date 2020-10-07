@@ -1,8 +1,6 @@
 ### TODO list
 
 # Features
-- Add lounge code to lounge room
-- Upgrade Spotify search
 - Create player redux slice
 - Move player to middleware
 - Change player name to lounge room name
