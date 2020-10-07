@@ -6,6 +6,8 @@ import { Play, Pause, ChapterNext, ChapterPrevious } from 'grommet-icons';
 import preset from '@rebass/preset'
 import _ from 'lodash';
 
+import Artist from './Artist';
+import Album from './Album';
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
 import SpotifySearch from './SpotifySearch';
@@ -26,6 +28,9 @@ class LoungeRoom extends PureComponent {
         height: 0,
       },
       playing: false,
+      isArtistSelected: false,
+      isAlbumSelected: false,
+      selectedAlbum: null,
     };
   }
 
@@ -33,8 +38,23 @@ class LoungeRoom extends PureComponent {
     this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
   }
 
+  componentWillUnmount() {
+    if (this.state.playing) {
+      this.player.togglePlay();
+      // TODO: don't update state
+    }
+  }
+
+  onArtistSelected = () => {
+    this.setState({ isArtistSelected: true });
+  }
+
+  onAlbumSelected = selectedAlbum => {
+    this.setState({ isAlbumSelected: true, selectedAlbum });
+  }
+
   checkForPlayer() {
-    if (window.Spotify !== null) {
+    if (window.Spotify !== null && !this.player) {
       // cancel the interval
       clearInterval(this.playerCheckInterval);
 
@@ -213,12 +233,23 @@ class LoungeRoom extends PureComponent {
   }
 
   render() {
+    if (this.state.isArtistSelected) {
+      return <Artist />;
+    }
+
+    if (this.state.isAlbumSelected) {
+      return <Album album={this.state.selectedAlbum} />;
+    }
+
     return (
       <ThemeProvider theme={preset}>
         <Flex flexDirection='column'>
           {this.renderCloseRoomButton()}
           {this.renderSpotifyPlayer()}
-          <SpotifySearch />
+          <SpotifySearch
+            onArtistSelected={this.onArtistSelected}
+            onAlbumSelected={this.onAlbumSelected}
+          />
         </Flex>
       </ThemeProvider>
     );

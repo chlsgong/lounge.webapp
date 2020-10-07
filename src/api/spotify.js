@@ -2,7 +2,7 @@ import qs from 'qs';
 
 import config from '../config';
 import { createInstance, createPostRequest, createGetRequest, createPutRequest, getAuthHeader } from '../utils/api';
-import { createURLQuery } from '../utils/url';
+import { createURLQuery, appendURLPathParam } from '../utils/url';
 
 const spotify = {
   accounts: {
@@ -19,6 +19,8 @@ const spotify = {
       player: '/v1/me/player',
       queue: '/v1/me/player/queue',
       search: '/v1/search',
+      artists: '/v1/artists',
+      albums: '/v1/albums',
     },
   },
 };
@@ -134,6 +136,63 @@ export const transferPlayback = (token, deviceId, autoPlay) => {
       },
       config: {
         headers: getAuthHeader(token),
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const getSpotifyArtist = (token, artistId) => {
+  return createGetRequest(
+    {
+      url: appendURLPathParam(spotify.api.v1.artists, [artistId]),
+      config: {
+        headers: getAuthHeader(token),
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const getSpotifyArtistAlbums = (token, artistId) => {
+  return createGetRequest(
+    {
+      url: appendURLPathParam(spotify.api.v1.artists, [artistId, 'albums']),
+      config: {
+        headers: getAuthHeader(token),
+        params: {
+          include_groups: 'album',
+        },
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const getSpotifyArtistTopTracks = (token, artistId) => {
+  return createGetRequest(
+    {
+      url: appendURLPathParam(spotify.api.v1.artists, [artistId, 'top-tracks']),
+      config: {
+        headers: getAuthHeader(token),
+        params: {
+          country: 'from_token',
+        },
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const getSpotifyAlbumTracks = (token, albumId) => {
+  return createGetRequest(
+    {
+      url: appendURLPathParam(spotify.api.v1.albums, [albumId, 'tracks']),
+      config: {
+        headers: getAuthHeader(token),
+        params: {
+          limit: '50', // TODO: should implement paging
+        },
       },
     },
     spotifyAPI,

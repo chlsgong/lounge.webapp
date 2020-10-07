@@ -1,6 +1,7 @@
 ### TODO list
 
 # Features
+- Add lounge code to lounge room
 - Upgrade Spotify search
 - Create player redux slice
 - Move player to middleware
@@ -8,7 +9,8 @@
 - Remove code from lounges and add to active lounges
 - JWT/OAuth
 - Refactor lounge reducer
-- Persistence
+- Redux persistence
+- Use nodemon on server
 - DB middlewares
 - Convert lodash get to optional chaining
 - Create components/use hooks
