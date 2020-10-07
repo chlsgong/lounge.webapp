@@ -7,6 +7,8 @@ import preset from '@rebass/preset'
 
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
+import Artist from './Artist';
+import Album from './Album';
 import SpotifySearch from './SpotifySearch';
 
 class Join extends PureComponent {
@@ -15,6 +17,9 @@ class Join extends PureComponent {
 
     this.state = {
       codeText: '',
+      selectedAlbum: null,
+      isArtistSelected: false,
+      isAlbumSelected: false,
     };
   }
 
@@ -36,9 +41,29 @@ class Join extends PureComponent {
     this.props.joinLounge(codeText);
   }
 
+  onArtistSelected = () => {
+    this.setState({ isArtistSelected: true });
+  }
+
+  onAlbumSelected = selectedAlbum => {
+    this.setState({ isAlbumSelected: true, selectedAlbum });
+  }
+
   render() {
+    if (this.state.isArtistSelected) {
+      return <Artist />;
+    }
+
+    if (this.state.isAlbumSelected) {
+      return <Album album={this.state.selectedAlbum} />;
+    }
+
     if (this.props.activeLoungeId) {
-      return <SpotifySearch />;
+      return (
+        <SpotifySearch
+          onArtistSelected={this.onArtistSelected}
+          onAlbumSelected={this.onAlbumSelected}
+        />);
     }
 
     return (

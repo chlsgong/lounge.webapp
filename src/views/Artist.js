@@ -5,15 +5,26 @@ import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 import _ from 'lodash';
 
+import Album from './Album';
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
 class Artist extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedAlbum: null,
+    };
+  }
+
   onAddToQueue = uri => {
     this.props.addToQueue(uri);
   }
 
-  onOpenAlbum = id => {
+  onOpenAlbum = selectedAlbum => {
+    this.props.getSpotifyAlbumTracks(selectedAlbum?.id);
     
+    this.setState({ selectedAlbum });
   }
 
   renderAddToQueueButton = uri => {
@@ -32,7 +43,7 @@ class Artist extends PureComponent {
     );
   }
 
-  renderAlbumDetailsButton = id => {
+  renderAlbumDetailsButton = album => {
     return (
       <Flex
         alignItems='center'
@@ -40,7 +51,7 @@ class Artist extends PureComponent {
       >
         <Button
           variant='secondary'
-          onClick={() => null}
+          onClick={() => this.onOpenAlbum(album)}
         >
           Open Album
         </Button>
@@ -121,11 +132,11 @@ class Artist extends PureComponent {
   }
 
   renderTopTracks = () => {
-    const { trackSearchResults } = this.props;
-    const searchResultItems = trackSearchResults.map((item, index) => {
-      return this.renderTrackSearchResultsItem(item, index);
+    const { selectedArtistTopTracks } = this.props;
+    const trackItems = selectedArtistTopTracks.map((item, index) => {
+      return this.renderTopTracksItem(item, index);
     });
-    const isResultsEmpty = _.isEmpty(trackSearchResults);
+    const isResultsEmpty = _.isEmpty(selectedArtistTopTracks);
 
     return (
       <Flex
@@ -133,14 +144,14 @@ class Artist extends PureComponent {
         bg='gray'
       >
         {this.renderListHeader('Top songs', isResultsEmpty)}
-        {searchResultItems}
+        {trackItems}
       </Flex>
     );
   }
 
   renderAlbumsItem = (item, index) => {
     const name = item?.name;
-    const id = item?.id;
+    // const id = item?.id;
     const artists = item?.artists || [];
     let artistNames = '';
     artists.forEach(artist => {
@@ -197,17 +208,17 @@ class Artist extends PureComponent {
             </Text>
           </Flex>
         </Flex>
-        {this.renderAlbumDetailsButton(id)}
+        {this.renderAlbumDetailsButton(item)}
       </Flex>
     );
   }
 
   renderAlbums = () => {
-    const { albumSearchResults } = this.props;
-    const searchResultItems = albumSearchResults.map((item, index) => {
-      return this.renderAlbumSearchResultsItem(item, index);
+    const { selectedArtistAlbums } = this.props;
+    const albumItems = selectedArtistAlbums.map((item, index) => {
+      return this.renderAlbumsItem(item, index);
     });
-    const isResultsEmpty = _.isEmpty(albumSearchResults);
+    const isResultsEmpty = _.isEmpty(selectedArtistAlbums);
 
     return (
       <Flex
@@ -215,7 +226,7 @@ class Artist extends PureComponent {
         bg='gray'
       >
         {this.renderListHeader('Albums', isResultsEmpty)}
-        {searchResultItems}
+        {albumItems}
       </Flex>
     );
   }
@@ -231,6 +242,15 @@ class Artist extends PureComponent {
   }
 
   render() {
+    const { selectedArtist } = this.props;
+    const { selectedAlbum } = this.state;
+    const { name, images } = selectedArtist;
+    const image = _.first(images);
+
+    if (selectedAlbum) {
+      return <Album album={selectedAlbum} />;
+    }
+
     return (
       <ThemeProvider theme={preset}>
         <Flex
@@ -242,8 +262,13 @@ class Artist extends PureComponent {
             textAlign='center'
             p={5}
           >
-            {this.props.artistName}
+            {name}
           </Heading>
+          <Image
+            src={image?.url}
+            width={image?.width}
+            height={image?.height}
+          />
           <Flex
             flexDirection='column'
             alignItems='stretch'

@@ -20,6 +20,7 @@ const spotify = {
       queue: '/v1/me/player/queue',
       search: '/v1/search',
       artists: '/v1/artists',
+      albums: '/v1/albums',
     },
   },
 };
@@ -160,7 +161,7 @@ export const getSpotifyArtistAlbums = (token, artistId) => {
       config: {
         headers: getAuthHeader(token),
         params: {
-          include_groups: 'album'
+          include_groups: 'album',
         },
       },
     },
@@ -174,6 +175,24 @@ export const getSpotifyArtistTopTracks = (token, artistId) => {
       url: appendURLPathParam(spotify.api.v1.artists, [artistId, 'top-tracks']),
       config: {
         headers: getAuthHeader(token),
+        params: {
+          country: 'from_token',
+        },
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const getSpotifyAlbumTracks = (token, albumId) => {
+  return createGetRequest(
+    {
+      url: appendURLPathParam(spotify.api.v1.albums, [albumId, 'tracks']),
+      config: {
+        headers: getAuthHeader(token),
+        params: {
+          limit: '50', // TODO: should implement paging
+        },
       },
     },
     spotifyAPI,

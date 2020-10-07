@@ -35,10 +35,16 @@ class SpotifySearch extends PureComponent {
 
   onGoToArtist = id => {
     this.props.getSpotifyArtist(id);
+    this.props.getSpotifyArtistAlbums(id);
+    this.props.getSpotifyArtistTopTracks(id);
+
+    this.props.onArtistSelected();
   }
 
-  onOpenAlbum = id => {
-    
+  onOpenAlbum = album => {
+    this.props.getSpotifyAlbumTracks(album?.id);
+
+    this.props.onAlbumSelected(album);
   }
 
   renderAddToQueueButton = uri => {
@@ -81,7 +87,7 @@ class SpotifySearch extends PureComponent {
       >
         <Button
           variant='secondary'
-          onClick={() => null}
+          onClick={() => this.onOpenAlbum(id)}
         >
           Open Album
         </Button>
@@ -251,7 +257,6 @@ class SpotifySearch extends PureComponent {
 
   renderAlbumSearchResultsItem = (item, index) => {
     const name = item?.name;
-    const id = item?.id;
     const artists = item?.artists || [];
     let artistNames = '';
     artists.forEach(artist => {
@@ -308,7 +313,7 @@ class SpotifySearch extends PureComponent {
             </Text>
           </Flex>
         </Flex>
-        {this.renderAlbumDetailsButton(id)}
+        {this.renderAlbumDetailsButton(item)}
       </Flex>
     );
   }
