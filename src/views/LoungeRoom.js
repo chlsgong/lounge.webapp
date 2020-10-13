@@ -53,6 +53,10 @@ class LoungeRoom extends PureComponent {
     this.setState({ isAlbumSelected: true, selectedAlbum });
   }
 
+  onBackToLounge = () => {
+    this.setState({ isArtistSelected: false, isAlbumSelected: false, selectedAlbum: null });
+  }
+
   checkForPlayer() {
     if (window.Spotify !== null && !this.player) {
       // cancel the interval
@@ -248,11 +252,11 @@ class LoungeRoom extends PureComponent {
 
   render() {
     if (this.state.isArtistSelected) {
-      return <Artist />;
+      return <Artist onBack={this.onBackToLounge} />;
     }
 
     if (this.state.isAlbumSelected) {
-      return <Album album={this.state.selectedAlbum} />;
+      return <Album album={this.state.selectedAlbum} onBack={this.onBackToLounge} />;
     }
 
     return (

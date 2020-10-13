@@ -116,6 +116,23 @@ class Album extends PureComponent {
     );
   }
 
+  renderBackButton = () => {
+    return (
+      <Flex
+        justifyContent='center'
+        mt={3}
+      >
+        <Button
+          variant='secondary'
+          onClick={this.props.onBack}
+          width={0.25}
+        >
+          Back
+        </Button>
+      </Flex>
+    );
+  }
+
   render() {
     const { album } = this.props;
     const { name, images } = album;
@@ -127,6 +144,7 @@ class Album extends PureComponent {
           flexDirection='column'
           alignItems='center'
         >
+          {this.renderBackButton()}
           <Heading
             variant='display'
             textAlign='center'

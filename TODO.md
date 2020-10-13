@@ -1,6 +1,7 @@
 ### TODO list
 
 # Features
+- Navigation
 - Create player redux slice
 - Move player to middleware
 - Change player name to lounge room name
