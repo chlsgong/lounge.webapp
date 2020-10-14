@@ -249,6 +249,7 @@ class Artist extends PureComponent {
     return (
       <Flex
         justifyContent='center'
+        alignSelf='stretch'
         mt={3}
       >
         <Button
