@@ -49,13 +49,17 @@ class Join extends PureComponent {
     this.setState({ isAlbumSelected: true, selectedAlbum });
   }
 
+  onBackToJoin = () => {
+    this.setState({ isArtistSelected: false, isAlbumSelected: false, selectedAlbum: null });
+  }
+
   render() {
     if (this.state.isArtistSelected) {
-      return <Artist />;
+      return <Artist onBack={this.onBackToJoin} />;
     }
 
     if (this.state.isAlbumSelected) {
-      return <Album album={this.state.selectedAlbum} />;
+      return <Album album={this.state.selectedAlbum} onBack={this.onBackToJoin} />;
     }
 
     if (this.props.activeLoungeId) {

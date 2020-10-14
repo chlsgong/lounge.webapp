@@ -27,6 +27,10 @@ class Artist extends PureComponent {
     this.setState({ selectedAlbum });
   }
 
+  onBackToArtist = () => {
+    this.setState({ selectedAlbum: null });
+  }
+
   renderAddToQueueButton = uri => {
     return (
       <Flex
@@ -241,6 +245,24 @@ class Artist extends PureComponent {
     );
   }
 
+  renderBackButton = () => {
+    return (
+      <Flex
+        justifyContent='center'
+        alignSelf='stretch'
+        mt={3}
+      >
+        <Button
+          variant='secondary'
+          onClick={this.props.onBack}
+          width={0.25}
+        >
+          Back
+        </Button>
+      </Flex>
+    );
+  }
+
   render() {
     const { selectedArtist } = this.props;
     const { selectedAlbum } = this.state;
@@ -248,7 +270,7 @@ class Artist extends PureComponent {
     const image = _.first(images);
 
     if (selectedAlbum) {
-      return <Album album={selectedAlbum} />;
+      return <Album album={selectedAlbum} onBack={this.onBackToArtist} />;
     }
 
     return (
@@ -257,6 +279,7 @@ class Artist extends PureComponent {
           flexDirection='column'
           alignItems='center'
         >
+          {this.renderBackButton()}
           <Heading
             variant='display'
             textAlign='center'
