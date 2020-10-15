@@ -9,6 +9,7 @@ import spotifySlice from './spotify/slice';
 import loginMiddleware from './login/middleware';
 import userMiddleware from './user/middleware';
 import loungeMiddleware from './lounge/middleware';
+import persistenceMiddleware from './persistence/middleware';
 
 const reducer = {
   login: loginSlice.reducer,
@@ -20,6 +21,7 @@ const reducer = {
 
 const middleware = [
   ...getDefaultMiddleware(),
+  persistenceMiddleware,
   loginMiddleware,
   userMiddleware,
   loungeMiddleware,

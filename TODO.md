@@ -1,8 +1,11 @@
 ### TODO list
 
-# Features
-- Redux persistence
+## Features
+# 0: Critical
 - JWT/OAuth
+- Refresh token
+
+# 1: High
 - Create player redux slice
 - Move player to middleware
 - Change player name to lounge room name
@@ -16,4 +19,5 @@
 - Add localhost self-signed certificate
 - Deploy and make Dev Ops scripts
 
-# Bugs
+## Bugs
+- Refactor getting user profile after cached login

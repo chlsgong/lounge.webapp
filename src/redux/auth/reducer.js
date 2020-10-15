@@ -1,4 +1,5 @@
 import { requestSpotifyToken } from './actions';
+import * as appActions from '../app/actions';
 
 // Auth reducer
 
@@ -14,6 +15,10 @@ export const initialState = {
 export const reducer = {};
 
 export const extraReducer = {
+  [appActions.loadReduxState]: (state, action) => ({
+    ...state,
+    ...action.payload?.auth,
+  }),
   [requestSpotifyToken.fulfilled]: (state, action) => ({
     ...state,
     accessToken: action.payload?.access_token,
