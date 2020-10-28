@@ -4,11 +4,13 @@ import { createActionMap } from '../../utils/redux';
 import { getURLParams } from '../../utils/url';
 import { isVerifiedSpotifyApp } from '../../utils/spotify';
 
-const handleInitWebApp = store => {
+const handleInitWebApp = async store => {
   const { code, state } = getURLParams(window.location.search);
 
   if (isVerifiedSpotifyApp(code, state)) {
     store.dispatch(authActions.requestSpotifyToken({ code }));
+    // TODO: move this elsewhere when adding navigation
+    window.history.replaceState({}, document.title, '/');
   }
 };
 
