@@ -1,6 +1,8 @@
 import { openLoungeRoom, closeLoungeRoom, joinLoungeRoom, getLoungeRoom } from './actions';
 import { refreshSpotifyToken } from '../auth/actions';
 import { requestLoungeUser } from '../user/actions';
+import { TokenOwner } from '../../constants';
+import { getExpirationMs } from '../../utils/auth';
 
 // Lounge reducer
 
@@ -15,6 +17,8 @@ export const initialState = {
     auth: {
       refreshToken: '',
       accessToken: '',
+      expiresIn: 0,
+      expirationMs: 0,
     }
   },
   isJoining: false,
@@ -92,6 +96,11 @@ export const extraReducer = {
   },
   [refreshSpotifyToken.fulfilled]: (state, action) => {
     const { payload } = action;
+    const { tokenOwner } = payload;
+    if (tokenOwner !== TokenOwner.lounge) {
+      return state;
+    }
+
     return {
       ...state,
       activeRoom: {
@@ -99,6 +108,8 @@ export const extraReducer = {
         auth: {
           ...state.activeRoom.auth,
           accessToken: payload?.access_token,
+          expiresIn: payload?.expires_in,
+          expirationMs: getExpirationMs(payload?.expires_in),
         },
       },
     };

@@ -1,23 +1,27 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { selectAccessToken } from '../auth/selectors';
+import { TokenOwner } from '../../constants';
 import { getSpotifyUserProfile } from '../../api/spotify';
 import { getUser, createUser } from '../../api/lounge';
+import { refreshIfNeeded } from '../../utils/auth';
 
 export const requestSpotifyUserProfile = createAsyncThunk(
   'user/requestSpotifyUserProfile',
-  async (_, thunkAPI) => {
-    try {
-      const token = selectAccessToken(thunkAPI.getState());
-      const response = await getSpotifyUserProfile(token);
-      console.log('Response', response);
-      return response.data;
-    }
-    catch(error) {
-      console.log('Error', error.response);
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  },
+  async (_, thunkAPI) =>  await refreshIfNeeded(
+    thunkAPI,
+    async accessToken => {
+      try {
+        const response = await getSpotifyUserProfile(accessToken);
+        console.log('Response', response);
+        return response.data;
+      }
+      catch(error) {
+        console.log('Error', error.response);
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+    },
+    TokenOwner.user,
+  ),
 );
 
 export const requestLoungeUser = createAsyncThunk(

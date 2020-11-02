@@ -5,5 +5,6 @@ export const selectActiveLoungeRoomId = state => selectActiveLoungeRoom(state).l
 export const selectActiveLoungeRoomName = state => selectActiveLoungeRoom(state).name;
 export const selectActiveLoungeRefreshToken = state => selectActiveLoungeRoom(state).auth.refreshToken;
 export const selectActiveLoungeAccessToken = state => selectActiveLoungeRoom(state).auth.accessToken;
+export const selectActiveLoungeExpirationMs = state => selectActiveLoungeRoom(state).auth.expirationMs;
 export const selectIsJoiningLounge = state => selectLounge(state).isJoining;
 export const selectErrorJoining = state => selectLounge(state).errorJoining;

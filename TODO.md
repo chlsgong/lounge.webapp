@@ -2,10 +2,9 @@
 
 ## Features
 # 0: Critical
-- JWT/OAuth
-- Refresh token
 
 # 1: High
+- Add name and artist to the current playing song
 - Create player redux slice
 - Move player to middleware
 - Change player name to lounge room name
@@ -18,6 +17,6 @@
 - React navigation
 - Add localhost self-signed certificate
 - Deploy and make Dev Ops scripts
+- Should guests accessTokens persist? If so, how long?
 
 ## Bugs
-- Refactor getting user profile after cached login
