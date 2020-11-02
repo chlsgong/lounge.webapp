@@ -195,6 +195,7 @@ class LoungeRoom extends PureComponent {
     );
   }
 
+  // TODO: add name and artist here
   renderSpotifyPlayer = () => {
     const { albumImage } = this.state;
 

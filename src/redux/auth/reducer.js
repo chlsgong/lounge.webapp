@@ -1,6 +1,7 @@
-import { requestSpotifyToken } from './actions';
+import { requestSpotifyToken, refreshSpotifyToken } from './actions';
 import * as appActions from '../app/actions';
 import { logout } from '../login/actions';
+import { TokenOwner } from '../../constants';
 import { getExpirationMs } from '../../utils/auth';
 
 // Auth reducer
@@ -40,4 +41,21 @@ export const extraReducer = {
       description: action.payload?.error_description,
     },
   }),
+  [refreshSpotifyToken.fulfilled]: (state, action) => {
+    const { payload } = action;
+    const { tokenOwner } = payload;
+    if (tokenOwner !== TokenOwner.user) {
+      return state;
+    }
+
+    return {
+      ...state,
+      accessToken: action.payload?.access_token,
+      tokenType: action.payload?.token_type,
+      expiresIn: action.payload?.expires_in,
+      expirationMs: getExpirationMs(action.payload?.expires_in),
+      scope: action.payload?.scope,
+      error: null,
+    };
+  },
 };

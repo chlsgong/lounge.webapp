@@ -3,6 +3,7 @@ import { selectActiveLoungeRoomId } from './selectors';
 import { refreshSpotifyToken } from '../auth/actions';
 import { requestLoungeUser } from '../user/actions';
 import { selectId } from '../user/selectors';
+import { TokenOwner } from '../../constants';
 import { createActionMap } from '../../utils/redux';
 
 const handleCreateLoungeRoomSuccess = store => {
@@ -18,7 +19,7 @@ const handleJoinLoungeRoomSuccess = store => {
 };
 
 const handleGetLoungeRoomSuccess = store => {
-  store.dispatch(refreshSpotifyToken());
+  store.dispatch(refreshSpotifyToken(TokenOwner.lounge));
 };
 
 const handleOpenLoungeRoomSuccess = (store, payload) => {

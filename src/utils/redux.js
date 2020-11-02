@@ -1,5 +1,3 @@
-import { selectActiveLoungeAccessToken } from '../redux/lounge/selectors';
-
 export const createActionMap = (actionMap) => {
   let mapping = {};
 
@@ -11,10 +9,4 @@ export const createActionMap = (actionMap) => {
   }
 
   return mapping;
-};
-
-export const passToken = (thunkAPI, callback) => {
-  const state = thunkAPI.getState();
-  const accessToken = selectActiveLoungeAccessToken(state);
-  return callback(accessToken);
 };
