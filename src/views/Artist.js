@@ -79,8 +79,6 @@ class Artist extends PureComponent {
     const imageWidth = _.get(images, '[1].width');
     const imageHeight = _.get(images, '[1].height');
 
-    // _.first(currentTrack?.album?.images)?.url;
-
     return (
       <Flex
         key={index}
@@ -166,8 +164,6 @@ class Artist extends PureComponent {
     const imageUrl = _.get(images, '[1].url');
     const imageWidth = _.get(images, '[1].width');
     const imageHeight = _.get(images, '[1].height');
-
-    // _.first(currentTrack?.album?.images)?.url;
 
     return (
       <Flex

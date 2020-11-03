@@ -67,7 +67,7 @@ class LoungeRoom extends PureComponent {
 
       // create the player
       this.player = new window.Spotify.Player({
-        name: 'Lounge Player', // TODO: change player name to lounge room name
+        name: this.props.activeLoungeName || 'Lounge Player',
         getOAuthToken: callback => callback(accessToken),
       });
       this.createEventHandlers();
@@ -195,7 +195,6 @@ class LoungeRoom extends PureComponent {
     );
   }
 
-  // TODO: add name and artist here
   renderSpotifyPlayer = () => {
     const { albumImage, trackName, artistName } = this.state;
 

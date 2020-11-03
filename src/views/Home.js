@@ -64,29 +64,17 @@ class Home extends PureComponent {
     this.setState({ loungeName });
   }
 
-  // TODO: clean up, no join button
   renderLoungeButton = loungeId => {
-    const isLoungeActive = this.isLoungeActive(loungeId);
-    const text = isLoungeActive ? 'Join' : 'Open';
-    const { activeLoungeId } = this.props;
-    const disabled = activeLoungeId && !isLoungeActive;
-    const variant = disabled ? 'disabled' : 'secondary';
-    let action = () => this.onOpenLounge(loungeId);
-    if (isLoungeActive) {
-      action = () => this.onJoinLounge(loungeId);
-    }
-
     return (
       <Flex
         alignItems='center'
         justifyContent='center'
       >
         <Button
-          variant={variant}
-          disabled={disabled}
-          onClick={action}
+          variant='secondary'
+          onClick={() => this.onOpenLounge(loungeId)}
         >
-          {text}
+          Open
         </Button>
       </Flex>
     );

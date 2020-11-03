@@ -2,18 +2,19 @@
 
 ## Features
 # 0: Critical
+- Get new access token with refresh token on init player
+- Put client secret/id/etc in config
+- Create components/use hooks
+- React navigation/browser stack
 
 # 1: High
+- Map _id to id in loungeRoom on server side
+- Implement paging in Spotify requests
 - Create player redux slice
 - Move player to middleware
-- Change player name to lounge room name
 - Remove code from lounges and add to active lounges
 - Refactor lounge reducer
-- Use nodemon on server
 - DB middlewares
-- Convert lodash get to optional chaining
-- Create components/use hooks
-- React navigation
 - Add localhost self-signed certificate
 - Deploy and make Dev Ops scripts
 - Should guests accessTokens persist? If so, how long?
