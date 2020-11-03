@@ -4,7 +4,6 @@
 # 0: Critical
 
 # 1: High
-- Add name and artist to the current playing song
 - Create player redux slice
 - Move player to middleware
 - Change player name to lounge room name
@@ -18,5 +17,6 @@
 - Add localhost self-signed certificate
 - Deploy and make Dev Ops scripts
 - Should guests accessTokens persist? If so, how long?
+- Color thief for background color
 
 ## Bugs

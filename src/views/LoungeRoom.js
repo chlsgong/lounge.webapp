@@ -197,7 +197,7 @@ class LoungeRoom extends PureComponent {
 
   // TODO: add name and artist here
   renderSpotifyPlayer = () => {
-    const { albumImage } = this.state;
+    const { albumImage, trackName, artistName } = this.state;
 
     return (
       <Flex
@@ -210,6 +210,21 @@ class LoungeRoom extends PureComponent {
           width={albumImage?.width}
           height={albumImage?.height}
         />
+        <Heading
+          variant='heading'
+          textAlign='center'
+          fontSize={5}
+          p={3}
+        >
+          {trackName}
+        </Heading>
+        <Heading
+          variant='heading'
+          textAlign='center'
+          fontSize={4}
+        >
+          {artistName}
+        </Heading>
         <Flex
           flexDirection='row'
           mt={2}
