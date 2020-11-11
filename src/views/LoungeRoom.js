@@ -8,9 +8,9 @@ import _ from 'lodash';
 
 import Artist from './Artist';
 import Album from './Album';
-import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
-
 import SpotifySearch from './SpotifySearch';
+import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
+import { TokenOwner } from '../constants';
 
 class LoungeRoom extends PureComponent {
   constructor(props) {
@@ -82,7 +82,8 @@ class LoungeRoom extends PureComponent {
     this.player.on('initialization_error', e => { console.error(e); });
     this.player.on('authentication_error', e => {
       console.error(e);
-      // TODO: get new access token with refresh token
+
+      this.props.refreshToken(TokenOwner.user);
     });
     this.player.on('account_error', e => { console.error(e); });
     this.player.on('playback_error', e => { console.error(e); });

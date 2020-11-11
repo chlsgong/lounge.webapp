@@ -2,7 +2,6 @@
 
 ## Features
 # 0: Critical
-- Get new access token with refresh token on init player
 - Put client secret/id/etc in config
 - Create components/use hooks
 - React navigation/browser stack

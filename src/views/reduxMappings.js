@@ -17,6 +17,7 @@ import {
   selectSelectedArtistTopTracks,
   selectSelectedAlbumTracks,
 } from '../redux/spotify/selectors';
+import { refreshSpotifyToken } from '../redux/auth/actions';
 import { logout } from '../redux/login/actions';
 import { createLoungeRoom, openLoungeRoom, closeLoungeRoom, joinLoungeRoom, getLoungeRoom } from '../redux/lounge/actions';
 import {
@@ -61,4 +62,5 @@ export const mapDispatchToProps = dispatch => ({
   getSpotifyArtistTopTracks: artistId => dispatch(retrieveSpotifyArtistTopTracks(artistId)),
   getSpotifyAlbumTracks: albumId => dispatch(retrieveSpotifyAlbumTracks(albumId)),
   logout: _ => dispatch(logout()),
+  refreshToken: tokenOwner => dispatch(refreshSpotifyToken(tokenOwner)),
 });
