@@ -28,12 +28,12 @@ const spotify = {
 const spotifyAccounts = createInstance({ baseURL: spotify.accounts.url });
 const spotifyAPI = createInstance({ baseURL: spotify.api.url });
 
-export const getSpotifyAuthorize = () => {
+export const getSpotifyAuthorize = spotifyState => {
   const params = {
-    'client_id': '16efad44cfd54e3ea050d602af68eadd',
+    'client_id': config.spotify.CLIENT_ID,
     'response_type': 'code',
     'redirect_uri': config.spotify.REDIRECT_URI,
-    'state': 'thisisthecorrectapp12345678',
+    'state': spotifyState,
     'scope': ['streaming', 'user-read-email', 'user-read-private'].join(' '),
   }
   const url = spotify.accounts.url + spotify.accounts.authorize + createURLQuery(params);
@@ -49,8 +49,8 @@ export const postSpotifyToken = code => {
         grant_type: 'authorization_code',
         code,
         redirect_uri: config.spotify.REDIRECT_URI,
-        client_id: '16efad44cfd54e3ea050d602af68eadd', // TODO: use config file
-        client_secret: '10f26b66944143449acf95adcc4074bb',
+        client_id: config.spotify.CLIENT_ID,
+        client_secret: config.spotify.CLIENT_SECRET,
       }),
       config: {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -61,7 +61,7 @@ export const postSpotifyToken = code => {
 };
 
 export const postRefreshSpotifyToken = refreshToken => {
-  const encodedString = btoa('16efad44cfd54e3ea050d602af68eadd:10f26b66944143449acf95adcc4074bb');
+  const encodedAuth = btoa(`${config.spotify.CLIENT_ID}:${config.spotify.CLIENT_SECRET}`);
 
   return createPostRequest(
     {
@@ -73,7 +73,7 @@ export const postRefreshSpotifyToken = refreshToken => {
       config: {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': `Basic ${encodedString}`,
+          'Authorization': `Basic ${encodedAuth}`,
         },
       },
     },

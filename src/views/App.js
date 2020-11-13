@@ -5,12 +5,11 @@ import { ThemeProvider } from 'emotion-theming'
 import preset from '@rebass/preset'
 
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
-import { getSpotifyAuthorize } from '../api/spotify';
 
 import Home from './Home';
 import Join from './Join';
 
-class App2 extends PureComponent {
+class App extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -20,7 +19,7 @@ class App2 extends PureComponent {
   }
 
   onLoginWithSpotify = () => {
-    window.location.href = getSpotifyAuthorize();
+    this.props.generateSpotifyCode();
   }
 
   onJoinLounge = () => {
@@ -89,4 +88,4 @@ class App2 extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App2);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

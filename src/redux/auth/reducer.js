@@ -14,9 +14,17 @@ export const initialState = {
   refreshToken: '',
   scope: '',
   error: null,
+  spotifyState: '',
 };
 
-export const reducer = {};
+export const reducer = {
+  saveSpotifyState: (state, action) => {
+    return {
+      ...state,
+      spotifyState: action.payload,
+    }
+  },
+};
 
 export const extraReducer = {
   [logout]: _ => initialState,

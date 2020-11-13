@@ -1,13 +1,15 @@
 import * as appActions from '../app/actions';
 import * as authActions from '../auth/actions';
+import { selectSpotifyState } from '../auth/selectors';
 import { createActionMap } from '../../utils/redux';
 import { getURLParams } from '../../utils/url';
 import { isVerifiedSpotifyApp } from '../../utils/spotify';
 
-const handleInitWebApp = async store => {
+const handleLoadReduxState = store => {
   const { code, state } = getURLParams(window.location.search);
+  const spotifyState = selectSpotifyState(store.getState());
 
-  if (isVerifiedSpotifyApp(code, state)) {
+  if (isVerifiedSpotifyApp(code, state, spotifyState)) {
     store.dispatch(authActions.requestSpotifyToken({ code }));
     // TODO: move this elsewhere when adding navigation
     window.history.replaceState({}, document.title, '/');
@@ -15,7 +17,7 @@ const handleInitWebApp = async store => {
 };
 
 const actionMap = createActionMap({
-  [appActions.initWebApp]: handleInitWebApp,
+  [appActions.loadReduxState]: handleLoadReduxState, 
 });
 
 const loginMiddleware = store => next => action => {

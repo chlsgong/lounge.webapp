@@ -1,3 +1,3 @@
-export const isVerifiedSpotifyApp = (code, state) => {
-  return code && state === 'thisisthecorrectapp12345678';
+export const isVerifiedSpotifyApp = (code, state, spotifyState) => {
+  return code && state === spotifyState;
 }

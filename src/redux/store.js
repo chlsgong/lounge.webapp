@@ -6,6 +6,7 @@ import authSlice from './auth/slice';
 import userSlice from './user/slice';
 import loungeSlice from './lounge/slice';
 import spotifySlice from './spotify/slice';
+import authMiddleware from './auth/middleware';
 import loginMiddleware from './login/middleware';
 import userMiddleware from './user/middleware';
 import loungeMiddleware from './lounge/middleware';
@@ -22,6 +23,7 @@ const reducer = {
 const middleware = [
   ...getDefaultMiddleware(),
   persistenceMiddleware,
+  authMiddleware,
   loginMiddleware,
   userMiddleware,
   loungeMiddleware,

@@ -1,4 +1,5 @@
 import { requestSpotifyToken, refreshSpotifyToken } from './auth/actions';
+import { saveSpotifyState } from './auth/extraActions';
 import { logout } from './login/actions';
 
 export const persistence = {
@@ -6,6 +7,7 @@ export const persistence = {
   whitelist: [
     requestSpotifyToken.fulfilled.toString(),
     refreshSpotifyToken.fulfilled.toString(),
+    saveSpotifyState.toString(),
     logout.toString(),
   ],
   // Values of the redux state to be saved
@@ -16,6 +18,7 @@ export const persistence = {
     ['auth', 'expirationMs'],
     ['auth', 'refreshToken'],
     ['auth', 'scope'],
+    ['auth', 'spotifyState'],
     ['login', 'isLoggedIn'],
   ],
 };

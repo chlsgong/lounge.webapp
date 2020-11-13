@@ -28,7 +28,7 @@ const handleGetLoungeUserFailure = (store, payload) => {
   }
 };
 
-const handleLoadReduxStore = store => {
+const handleLoadReduxState = store => {
   const state = store.getState();
   const accessToken = selectAccessToken(state);
   
@@ -38,12 +38,11 @@ const handleLoadReduxStore = store => {
 };
 
 const actionMap = createActionMap({
-  // Should be in auth middleware, but here is fine now
   [requestSpotifyToken.fulfilled]: handleLogInSuccess,
   [requestSpotifyUserProfile.fulfilled]: handleGetSpotifyProfileSuccess,
   // [requestLoungeUser.fulfilled]: handleGetLoungeUserSuccess,
   [requestLoungeUser.rejected]: handleGetLoungeUserFailure,
-  [appActions.loadReduxState]: handleLoadReduxStore,
+  [appActions.loadReduxState]: handleLoadReduxState,
 });
 
 const userMiddleware = store => next => action => {
