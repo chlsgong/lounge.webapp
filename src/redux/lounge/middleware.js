@@ -5,6 +5,7 @@ import { requestLoungeUser } from '../user/actions';
 import { selectId } from '../user/selectors';
 import { TokenOwner } from '../../constants';
 import { createActionMap } from '../../utils/redux';
+import { connect, joinRoom } from '../../socket';
 
 const handleCreateLoungeRoomSuccess = store => {
   const state = store.getState();
@@ -16,6 +17,9 @@ const handleJoinLoungeRoomSuccess = store => {
   const state = store.getState();
   const loungeId = selectActiveLoungeRoomId(state);
   store.dispatch(getLoungeRoom(loungeId));
+
+  connect();
+  joinRoom(loungeId);
 };
 
 const handleGetLoungeRoomSuccess = store => {

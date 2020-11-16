@@ -2,8 +2,11 @@
 
 ## Features
 # 0: Critical
+- Code to upper case and ignore case sensitivity
+- Push notifications with socket io
+- Deploy current
 - Create components/use hooks
-- React navigation/browser stack
+- React router dom
 - Implement paging in Spotify requests
 
 # 1: High
