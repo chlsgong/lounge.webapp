@@ -5,6 +5,7 @@ import {
   selectActiveLoungeRoom,
   selectIsJoiningLounge,
   selectErrorJoining,
+  selectActiveLoungeRoomDbId,
   selectActiveLoungeRoomId,
   selectActiveLoungeRoomName,
 } from '../redux/lounge/selectors';
@@ -35,6 +36,7 @@ export const mapStateToProps = state => ({
   isLoggedIn: selectIsLoggedIn(state),
   lounges: selectLoungeRooms(state),
   activeLounge: selectActiveLoungeRoom(state),
+  activeLoungeDbId: selectActiveLoungeRoomDbId(state),
   activeLoungeId: selectActiveLoungeRoomId(state),
   activeLoungeName: selectActiveLoungeRoomName(state),
   isJoining: selectIsJoiningLounge(state),

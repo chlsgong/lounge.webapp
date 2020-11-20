@@ -22,7 +22,9 @@ class Home extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.activeLoungeId && this.props.activeLoungeId) {
+    // Joins an open room when app is reloaded and gets lounge user
+    // Should not do this if opening a new room
+    if (!prevProps.activeLoungeId && this.props.activeLoungeId && !this.props.activeLoungeDbId) {
       this.onJoinLounge(this.props.activeLoungeId);
     }
   }
@@ -57,6 +59,10 @@ class Home extends PureComponent {
 
   onSearchLounge = () => {
     this.setState({ isJoinViewActive: true });
+  }
+
+  onLoungeClosed = () => {
+    this.setState({ hasJoinedLounge: false });
   }
 
   onLoungeNameChange = event => {

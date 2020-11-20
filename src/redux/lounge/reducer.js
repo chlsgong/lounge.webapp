@@ -25,6 +25,15 @@ export const initialState = {
   errorJoining: false,
 };
 
+export const reducer = {
+  loungeClosed: state => {
+    return {
+      ...state,
+      activeRoom: initialState.activeRoom,
+    }
+  },
+};
+
 export const extraReducer = {
   [requestLoungeUser.fulfilled]: (state, action) => {
     const { payload } = action;

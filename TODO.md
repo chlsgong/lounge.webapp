@@ -1,10 +1,11 @@
 ### TODO list
 
 ## Features
-# 0: Critical
+# Needed before deployment
 - Code to upper case and ignore case sensitivity
-- Push notifications with socket io
-- Deploy current
+- Limit number of rooms to 2 per user
+
+# 0: Critical
 - Create components/use hooks
 - React router dom
 - Implement paging in Spotify requests

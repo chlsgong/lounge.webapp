@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { initialState, extraReducer } from './reducer';
+import { initialState, reducer, extraReducer } from './reducer';
 
 const loungeSlice = createSlice({
   name: 'lounge',
   initialState,
-  reducers: {},
+  reducers: reducer,
   extraReducers: extraReducer,
 });
 
