@@ -10,7 +10,10 @@
 - Implement paging in Spotify requests
 
 # 1: High
+- If using mobile, direct user to open spotify app for playback
 - Should guests accessTokens persist? If so, how long?
+- Add "like" button in player
+- Remove similar characters in lounge code
 - Map _id to id in loungeRoom on server side
 - Create player redux slice
 - Move player to middleware
@@ -22,3 +25,4 @@
 - Color thief for background color
 
 ## Bugs
+- Cannot get user after logging in for first time
