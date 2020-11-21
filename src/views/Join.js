@@ -2,8 +2,9 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { Flex, Heading, Button, Text } from 'rebass';
 import { Input } from '@rebass/forms';
-import { ThemeProvider } from 'emotion-theming'
-import preset from '@rebass/preset'
+import { ThemeProvider } from 'emotion-theming';
+import preset from '@rebass/preset';
+import toUpper from 'lodash/toUpper';
 
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
@@ -33,7 +34,8 @@ class Join extends PureComponent {
 
   onCodeTextChange = event => {
     const codeText = event.target.value;
-    this.setState({ codeText });
+    const codeTextUpper = toUpper(codeText);
+    this.setState({ codeText: codeTextUpper });
   }
 
   onJoinLounge = () => {
@@ -92,6 +94,7 @@ class Join extends PureComponent {
             bg='white'
             textAlign='center'
             onChange={this.onCodeTextChange}
+            maxLength={6}
           />
           <Button
             my={2}

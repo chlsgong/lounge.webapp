@@ -2,7 +2,6 @@
 
 ## Features
 # Needed before deployment
-- Code to upper case and ignore case sensitivity
 - Limit number of rooms to 2 per user
 
 # 0: Critical
