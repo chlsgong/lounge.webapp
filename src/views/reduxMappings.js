@@ -30,6 +30,11 @@ import {
   retrieveSpotifyArtistAlbums,
   retrieveSpotifyArtistTopTracks,
   retrieveSpotifyAlbumTracks,
+  retrieveCurrentlyPlaying,
+  play,
+  pause,
+  playPrevious,
+  playNext,
 } from '../redux/spotify/actions';
 
 export const mapStateToProps = state => ({
@@ -67,4 +72,9 @@ export const mapDispatchToProps = dispatch => ({
   logout: _ => dispatch(logout()),
   refreshToken: tokenOwner => dispatch(refreshSpotifyToken(tokenOwner)),
   generateSpotifyCode: () => generateSpotifyState(dispatch),
+  getCurrentlyPlayingTrack: () => dispatch(retrieveCurrentlyPlaying()),
+  playTrack: () => dispatch(play()),
+  pauseTrack: () => dispatch(pause()),
+  previousTrack: () => dispatch(playPrevious()),
+  nextTrack: () => dispatch(playNext()),
 });

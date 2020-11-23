@@ -8,6 +8,11 @@ import {
   getSpotifyArtistAlbums,
   getSpotifyArtistTopTracks,
   getSpotifyAlbumTracks,
+  getCurrentlyPlaying,
+  postPrevious,
+  postNext,
+  putPlay,
+  putPause,
 } from '../../api/spotify';
 import { refreshIfNeeded } from '../../utils/auth';
 
@@ -126,6 +131,96 @@ export const retrieveSpotifyAlbumTracks = createAsyncThunk(
     async accessToken => {
       try {
         const response = await getSpotifyAlbumTracks(accessToken, albumId);
+        console.log('Response', response);
+        return response.data;
+      }
+      catch(error) {
+        console.log('Error', error.response);
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+    },
+  ),
+);
+
+export const retrieveCurrentlyPlaying = createAsyncThunk(
+  'spotify/retrieveCurrentlyPlaying',
+  async (_, thunkAPI) => await refreshIfNeeded(
+    thunkAPI,
+    async accessToken => {
+      try {
+        const response = await getCurrentlyPlaying(accessToken);
+        console.log('Response', response);
+        return response.data;
+      }
+      catch(error) {
+        console.log('Error', error.response);
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+    },
+  ),
+);
+
+export const playPrevious = createAsyncThunk(
+  'spotify/playPrevious',
+  async (_, thunkAPI) => await refreshIfNeeded(
+    thunkAPI,
+    async accessToken => {
+      try {
+        const response = await postPrevious(accessToken);
+        console.log('Response', response);
+        return response.data;
+      }
+      catch(error) {
+        console.log('Error', error.response);
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+    },
+  ),
+);
+
+export const playNext = createAsyncThunk(
+  'spotify/playNext',
+  async (_, thunkAPI) => await refreshIfNeeded(
+    thunkAPI,
+    async accessToken => {
+      try {
+        const response = await postNext(accessToken);
+        console.log('Response', response);
+        return response.data;
+      }
+      catch(error) {
+        console.log('Error', error.response);
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+    },
+  ),
+);
+
+export const play = createAsyncThunk(
+  'spotify/play',
+  async (_, thunkAPI) => await refreshIfNeeded(
+    thunkAPI,
+    async accessToken => {
+      try {
+        const response = await putPlay(accessToken);
+        console.log('Response', response);
+        return response.data;
+      }
+      catch(error) {
+        console.log('Error', error.response);
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+    },
+  ),
+);
+
+export const pause = createAsyncThunk(
+  'spotify/pause',
+  async (_, thunkAPI) => await refreshIfNeeded(
+    thunkAPI,
+    async accessToken => {
+      try {
+        const response = await putPause(accessToken);
         console.log('Response', response);
         return response.data;
       }

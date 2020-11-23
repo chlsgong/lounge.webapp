@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { isBrowser } from 'react-device-detect';
 import { Flex, Button, Image, Heading } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import { Play, Pause, ChapterNext, ChapterPrevious } from 'grommet-icons';
@@ -35,7 +36,12 @@ class LoungeRoom extends PureComponent {
   }
 
   componentDidMount() {
-    this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
+    if (isBrowser) {
+      this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
+    }
+    else {
+      // Get currently playing
+    }
   }
 
   componentWillUnmount() {
@@ -70,10 +76,13 @@ class LoungeRoom extends PureComponent {
         name: this.props.activeLoungeName || 'Lounge Player',
         getOAuthToken: callback => callback(accessToken),
       });
-      this.createEventHandlers();
-  
-      // finally, connect!
-      this.player.connect();
+
+      if (this.player) {
+        this.createEventHandlers();
+    
+        // finally, connect!
+        this.player.connect();
+      }
     }
   }
 
@@ -139,15 +148,33 @@ class LoungeRoom extends PureComponent {
   }
 
   onPlay = () => {
-    this.player.togglePlay();
+    if (isBrowser && this.player) { // TODO: put isBrowser in appReducer
+      this.player.togglePlay();
+    }
+    else if (this.state.playing) {
+      this.props.pauseTrack();
+    }
+    else {
+      this.props.playTrack();
+    }
   }
 
   onPrev = () => {
-    this.player.previousTrack();
+    if (isBrowser && this.player) {
+      this.player.previousTrack();
+    }
+    else {
+      this.props.previousTrack();
+    }
   }
 
   onNext = () => {
-    this.player.nextTrack();
+    if (isBrowser && this.player) {
+      this.player.nextTrack();
+    }
+    else {
+      this.props.nextTrack();
+    }
   }
 
   getPlayIcon = () => {
