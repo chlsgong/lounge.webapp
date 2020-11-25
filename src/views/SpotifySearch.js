@@ -25,7 +25,6 @@ class SpotifySearch extends PureComponent {
   onSearchSpotify = () => {
     const { queryString } = this.state;
     if (queryString) {
-      // TODO: to upper case and ignore case sensitivity
       this.props.querySpotify(queryString);
     }
   }

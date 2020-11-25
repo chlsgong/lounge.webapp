@@ -37,15 +37,15 @@ const registerHandlers = dispatch => {
   if (!socket) return;
 
   socket.on('connect', _ => {	
-    console.log('Connected to server!');	
+    // console.log('Connected to server!');
   });
 
   socket.on('connect_error', error => {
-    console.log('Error connecting to server', error);
+    // console.log('Error connecting to server', error);
   });
 
   socket.on('disconnect', reason => {
-    console.log('disconnect reason', reason);
+    // console.log('disconnect reason', reason);
 
     if (reason === 'io server disconnect') {
       hasJoinedRoom = false;
@@ -55,7 +55,7 @@ const registerHandlers = dispatch => {
   });
 
   socket.on('lounge-closed', _ => {
-    console.log('lounge closed by host');
+    // console.log('lounge closed by host');
 
     hasJoinedRoom = false;
     // leave the room page

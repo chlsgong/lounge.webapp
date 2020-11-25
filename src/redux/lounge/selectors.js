@@ -9,3 +9,4 @@ export const selectActiveLoungeAccessToken = state => selectActiveLoungeRoom(sta
 export const selectActiveLoungeExpirationMs = state => selectActiveLoungeRoom(state).auth.expirationMs;
 export const selectIsJoiningLounge = state => selectLounge(state).isJoining;
 export const selectErrorJoining = state => selectLounge(state).errorJoining;
+export const selectIsLoungeLoaded = state => selectLounge(state).isLoungeLoaded;

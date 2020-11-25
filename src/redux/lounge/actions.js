@@ -18,11 +18,9 @@ export const createLoungeRoom = createAsyncThunk(
       };
 
       const response = await createLounge(lounge);
-      console.log('Response', response);
       return response.data;
     }
     catch(error) {
-      console.log('Error', error.response);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   },
@@ -33,11 +31,9 @@ export const getLoungeRoom = createAsyncThunk(
   async (loungeId, thunkAPI) => {
     try {
       const response = await getLounge(loungeId);
-      console.log('Response', response);
       return response.data;
     }
     catch(error) {
-      console.log('Error', error.response);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   },
@@ -50,11 +46,9 @@ export const openLoungeRoom = createAsyncThunk(
       const state = thunkAPI.getState();
       const userId = selectId(state);
       const response = await openLounge({ userId, loungeId });
-      console.log('Response', response);
       return response.data;
     }
     catch(error) {
-      console.log('Error', error.response);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   },
@@ -67,11 +61,9 @@ export const closeLoungeRoom = createAsyncThunk(
       const state = thunkAPI.getState();
       const userId = selectId(state);
       const response = await closeLounge({ userId, loungeId });
-      console.log('Response', response);
       return response.data;
     }
     catch(error) {
-      console.log('Error', error.response);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   },
@@ -82,11 +74,9 @@ export const joinLoungeRoom = createAsyncThunk(
   async (code, thunkAPI) => {
     try {
       const response = await joinLounge(code);
-      console.log('Response', response);
       return response.data;
     }
     catch(error) {
-      console.log('Error', error.response);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   },

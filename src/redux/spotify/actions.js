@@ -23,11 +23,9 @@ export const querySpotifyCatalog = createAsyncThunk(
     async accessToken => {
       try {
         const response = await querySpotify(accessToken, queryString, limit);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -41,11 +39,9 @@ export const addToSpotifyQueue = createAsyncThunk(
     async accessToken => {
       try {
         const response = await postAddToSpotifyQueue(accessToken, uri);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -59,11 +55,9 @@ export const transferSpotifyPlayback = createAsyncThunk(
     async accessToken => {
       try {
         const response = await transferPlayback(accessToken, deviceId, autoPlay);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -77,11 +71,9 @@ export const retrieveSpotifyArtist = createAsyncThunk(
     async accessToken => {
       try {
         const response = await getSpotifyArtist(accessToken, artistId);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -95,11 +87,9 @@ export const retrieveSpotifyArtistAlbums = createAsyncThunk(
     async accessToken => {
       try {
         const response = await getSpotifyArtistAlbums(accessToken, artistId);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -113,11 +103,9 @@ export const retrieveSpotifyArtistTopTracks = createAsyncThunk(
     async accessToken => {
       try {
         const response = await getSpotifyArtistTopTracks(accessToken, artistId);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -131,11 +119,9 @@ export const retrieveSpotifyAlbumTracks = createAsyncThunk(
     async accessToken => {
       try {
         const response = await getSpotifyAlbumTracks(accessToken, albumId);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -149,11 +135,9 @@ export const retrieveCurrentlyPlaying = createAsyncThunk(
     async accessToken => {
       try {
         const response = await getCurrentlyPlaying(accessToken);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -167,11 +151,9 @@ export const playPrevious = createAsyncThunk(
     async accessToken => {
       try {
         const response = await postPrevious(accessToken);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -185,11 +167,9 @@ export const playNext = createAsyncThunk(
     async accessToken => {
       try {
         const response = await postNext(accessToken);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -203,11 +183,9 @@ export const play = createAsyncThunk(
     async accessToken => {
       try {
         const response = await putPlay(accessToken);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -221,11 +199,9 @@ export const pause = createAsyncThunk(
     async accessToken => {
       try {
         const response = await putPause(accessToken);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
