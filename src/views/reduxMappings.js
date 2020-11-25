@@ -18,6 +18,8 @@ import {
   selectSelectedArtistTopTracks,
   selectSelectedAlbumTracks,
 } from '../redux/spotify/selectors';
+import { selectPlayer } from '../redux/player/selectors';
+import { selectIsBrowser } from '../redux/app/selectors';
 import { refreshSpotifyToken } from '../redux/auth/actions';
 import { generateSpotifyState } from '../redux/auth/extraActions';
 import { logout } from '../redux/login/actions';
@@ -30,7 +32,12 @@ import {
   retrieveSpotifyArtistAlbums,
   retrieveSpotifyArtistTopTracks,
   retrieveSpotifyAlbumTracks,
+  play,
+  pause,
+  playPrevious,
+  playNext,
 } from '../redux/spotify/actions';
+import { updatePlayer } from '../redux/player/extraActions';
 
 export const mapStateToProps = state => ({
   isLoggedIn: selectIsLoggedIn(state),
@@ -49,6 +56,8 @@ export const mapStateToProps = state => ({
   selectedArtistTopTracks: selectSelectedArtistTopTracks(state),
   selectedAlbumTracks: selectSelectedAlbumTracks(state),
   accessToken: selectAccessToken(state),
+  player: selectPlayer(state),
+  isBrowser: selectIsBrowser(state),
 });
 
 export const mapDispatchToProps = dispatch => ({
@@ -67,4 +76,9 @@ export const mapDispatchToProps = dispatch => ({
   logout: _ => dispatch(logout()),
   refreshToken: tokenOwner => dispatch(refreshSpotifyToken(tokenOwner)),
   generateSpotifyCode: () => generateSpotifyState(dispatch),
+  playTrack: () => dispatch(play()),
+  pauseTrack: () => dispatch(pause()),
+  previousTrack: () => dispatch(playPrevious()),
+  nextTrack: () => dispatch(playNext()),
+  updatePlayerState: playerState => dispatch(updatePlayer(playerState)),
 });

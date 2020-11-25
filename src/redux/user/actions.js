@@ -12,11 +12,9 @@ export const requestSpotifyUserProfile = createAsyncThunk(
     async accessToken => {
       try {
         const response = await getSpotifyUserProfile(accessToken);
-        console.log('Response', response);
         return response.data;
       }
       catch(error) {
-        console.log('Error', error.response);
         return thunkAPI.rejectWithValue(error.response.data);
       }
     },
@@ -29,11 +27,9 @@ export const requestLoungeUser = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const response = await getUser(id);
-      console.log('Response', response);
       return response.data;
     }
     catch(error) {
-      console.log('Error', error.response);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   },
@@ -44,11 +40,9 @@ export const createLoungeUser = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const response = await createUser(id);
-      console.log('Response', response);
       return response.data;
     }
     catch(error) {
-      console.log('Error', error.response);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   },

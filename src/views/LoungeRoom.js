@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { Flex, Button, Image, Heading } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
 import { Play, Pause, ChapterNext, ChapterPrevious } from 'grommet-icons';
@@ -19,15 +19,6 @@ class LoungeRoom extends PureComponent {
     this.playerCheckInterval = null;
 
     this.state = {
-      trackName: '',
-      albumName: '',
-      artistName: '',
-      albumImage: {
-        url: '',
-        width: 0,
-        height: 0,
-      },
-      playing: false,
       isArtistSelected: false,
       isAlbumSelected: false,
       selectedAlbum: null,
@@ -35,11 +26,13 @@ class LoungeRoom extends PureComponent {
   }
 
   componentDidMount() {
-    this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
+    if (this.props.isBrowser) {
+      this.playerCheckInterval = setInterval(() => this.checkForPlayer(), 1000);
+    }
   }
 
   componentWillUnmount() {
-    if (this.state.playing) {
+    if (this.props.player.playing) {
       this.player.togglePlay();
       // TODO: don't update state
     }
@@ -70,36 +63,32 @@ class LoungeRoom extends PureComponent {
         name: this.props.activeLoungeName || 'Lounge Player',
         getOAuthToken: callback => callback(accessToken),
       });
-      this.createEventHandlers();
-  
-      // finally, connect!
-      this.player.connect();
+
+      if (this.player) {
+        this.createEventHandlers();
+    
+        // finally, connect!
+        this.player.connect();
+      }
     }
   }
 
   createEventHandlers() {
     // Error handlers
-    this.player.on('initialization_error', e => { console.error(e); });
+    this.player.on('initialization_error', e => {});
     this.player.on('authentication_error', e => {
-      console.error(e);
-
       this.props.refreshToken(TokenOwner.user);
     });
-    this.player.on('account_error', e => { console.error(e); });
-    this.player.on('playback_error', e => { console.error(e); });
+    this.player.on('account_error', e => {});
+    this.player.on('playback_error', e => {});
   
     // Playback status updates
     this.player.on('player_state_changed', state => {
-      console.log(state);
-
       this.onStateChanged(state);
     });
   
     // Ready
     this.player.on('ready', data => {
-      console.log('Let the music play on!');
-      console.log(data);
-
       const { device_id } = data;
       this.props.transferPlayback({
         deviceId: device_id,
@@ -125,29 +114,49 @@ class LoungeRoom extends PureComponent {
 
       // get track state
       const playing = !state.paused;
-      
-      this.setState({
-        // position,
-        // duration,
+
+      // create player state
+      const playerState = {
         trackName,
         albumName,
         artistName,
         albumImage,
         playing,
-      });
+      };
+      
+      // set player state
+      this.props.updatePlayerState(playerState);
     }
   }
 
   onPlay = () => {
-    this.player.togglePlay();
+    if (this.props.isBrowser && this.player) {
+      this.player.togglePlay();
+    }
+    else if (this.props.player.playing) {
+      this.props.pauseTrack();
+    }
+    else {
+      this.props.playTrack();
+    }
   }
 
   onPrev = () => {
-    this.player.previousTrack();
+    if (this.props.isBrowser && this.player) {
+      this.player.previousTrack();
+    }
+    else {
+      this.props.previousTrack();
+    }
   }
 
   onNext = () => {
-    this.player.nextTrack();
+    if (this.props.isBrowser && this.player) {
+      this.player.nextTrack();
+    }
+    else {
+      this.props.nextTrack();
+    }
   }
 
   getPlayIcon = () => {
@@ -164,7 +173,7 @@ class LoungeRoom extends PureComponent {
       />
     );
 
-    return this.state.playing ? pause : play;
+    return this.props.player.playing ? pause : play;
   }
 
   renderCloseRoomButton = () => {
@@ -196,8 +205,33 @@ class LoungeRoom extends PureComponent {
     );
   }
 
+  renderAlbumImage = () => {
+    const { albumImage, isCurrentTrackEmpty } = this.props.player;
+
+    if (isCurrentTrackEmpty) {
+      return (
+        <Heading
+          variant='heading'
+          textAlign='center'
+          fontSize={4}
+        >
+          No currently playing track, tap button to open Spotify
+        </Heading>
+      );
+    }
+    else {
+      return (
+        <Image
+          src={albumImage?.url}
+          width={albumImage?.width}
+          height={albumImage?.height}
+        />
+      );
+    }
+  }
+
   renderSpotifyPlayer = () => {
-    const { albumImage, trackName, artistName } = this.state;
+    const { trackName, artistName } = this.props.player;
 
     return (
       <Flex
@@ -205,11 +239,7 @@ class LoungeRoom extends PureComponent {
         alignItems='center'
         mt={4}
       >
-        <Image
-          src={albumImage?.url}
-          width={albumImage?.width}
-          height={albumImage?.height}
-        />
+        {this.renderAlbumImage()}
         <Heading
           variant='heading'
           textAlign='center'

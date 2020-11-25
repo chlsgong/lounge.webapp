@@ -6,6 +6,8 @@ import authSlice from './auth/slice';
 import userSlice from './user/slice';
 import loungeSlice from './lounge/slice';
 import spotifySlice from './spotify/slice';
+import appSlice from './app/slice';
+import playerSlice from './player/slice';
 import authMiddleware from './auth/middleware';
 import loginMiddleware from './login/middleware';
 import userMiddleware from './user/middleware';
@@ -18,6 +20,8 @@ const reducer = {
   user: userSlice.reducer,
   lounge: loungeSlice.reducer,
   spotify: spotifySlice.reducer,
+  app: appSlice.reducer,
+  player: playerSlice.reducer,
 };
 
 const middleware = [

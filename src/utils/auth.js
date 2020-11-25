@@ -21,13 +21,16 @@ export const getExpirationMs = expiresIn => {
  */
 export const refreshIfNeeded = async (thunkAPI, callback, tokenOwner = TokenOwner.lounge) => {
   const state = thunkAPI.getState();
+  const accessToken = tokenOwner === TokenOwner.user
+    ? selectAccessToken(state)
+    : selectActiveLoungeAccessToken(state);
   const expirationMs = tokenOwner === TokenOwner.user
     ? selectExpirationMs(state)
     : selectActiveLoungeExpirationMs(state);
   const padding = 1000;
 
   // Includes padding to make sure the token doesn't expire during execution
-  if (Date.now() > (expirationMs - padding)) {
+  if (Date.now() > (expirationMs - padding) || !accessToken) {
     let callbackResult;
     await thunkAPI.dispatch(refreshSpotifyToken(tokenOwner))
       .then(unwrapResult)
@@ -38,9 +41,6 @@ export const refreshIfNeeded = async (thunkAPI, callback, tokenOwner = TokenOwne
     return callbackResult;
   }
   else {
-    const accessToken = tokenOwner === TokenOwner.user
-      ? selectAccessToken(state)
-      : selectActiveLoungeAccessToken(state);
     return await callback(accessToken);
   }
 };

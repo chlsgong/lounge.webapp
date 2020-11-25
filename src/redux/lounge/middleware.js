@@ -8,10 +8,14 @@ import {
 import { selectActiveLoungeRoomId } from './selectors';
 import { refreshSpotifyToken } from '../auth/actions';
 import { requestLoungeUser } from '../user/actions';
+import { retrieveCurrentlyPlaying } from '../spotify/actions';
+import { selectIsBrowser } from '../app/selectors';
 import { selectId } from '../user/selectors';
 import { TokenOwner } from '../../constants';
 import { createActionMap } from '../../utils/redux';
 import { connect, openRoom, joinRoom, closeRoom } from '../../socket';
+
+let retrieveCurrentlyPlayingInterval = null;
 
 const handleCreateLoungeRoomSuccess = store => {
   const state = store.getState();
@@ -31,7 +35,12 @@ const handleJoinLoungeRoomSuccess = store => {
 const handleGetLoungeRoomSuccess = store => {
   const state = store.getState();
   const loungeId = selectActiveLoungeRoomId(state);
+  const isBrowser = selectIsBrowser(state);
   store.dispatch(refreshSpotifyToken(TokenOwner.lounge));
+
+  if (!isBrowser) {
+    retrieveCurrentlyPlayingInterval = setInterval(() => store.dispatch(retrieveCurrentlyPlaying()), 8000);
+  }
 
   connect(store.dispatch);
   joinRoom(loungeId);
@@ -48,6 +57,8 @@ const handleOpenLoungeRoomSuccess = (store, payload) => {
 const handleCloseLoungeRoomSuccess = store => {
   const state = store.getState();
   const loungeId = selectActiveLoungeRoomId(state);
+
+  clearInterval(retrieveCurrentlyPlayingInterval);
 
   closeRoom(loungeId);
 };

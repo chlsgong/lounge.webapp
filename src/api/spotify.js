@@ -18,6 +18,11 @@ const spotify = {
       me: '/v1/me',
       player: '/v1/me/player',
       queue: '/v1/me/player/queue',
+      currentlyPlaying: '/v1/me/player/currently-playing',
+      play: '/v1/me/player/play',
+      pause: 'v1/me/player/pause',
+      previous: '/v1/me/player/previous',
+      next: 'v1/me/player/next',
       search: '/v1/search',
       artists: '/v1/artists',
       albums: '/v1/albums',
@@ -193,6 +198,66 @@ export const getSpotifyAlbumTracks = (token, albumId) => {
         params: {
           limit: '50', // TODO: should implement paging
         },
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const getCurrentlyPlaying = token => {
+  return createGetRequest(
+    {
+      url: spotify.api.v1.currentlyPlaying,
+      config: {
+        headers: getAuthHeader(token),
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const putPlay = token => {
+  return createPutRequest(
+    {
+      url: spotify.api.v1.play,
+      config: {
+        headers: getAuthHeader(token),
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const putPause = token => {
+  return createPutRequest(
+    {
+      url: spotify.api.v1.pause,
+      config: {
+        headers: getAuthHeader(token),
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const postPrevious = token => {
+  return createPostRequest(
+    {
+      url: spotify.api.v1.previous,
+      config: {
+        headers: getAuthHeader(token),
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const postNext = token => {
+  return createPostRequest(
+    {
+      url: spotify.api.v1.next,
+      config: {
+        headers: getAuthHeader(token),
       },
     },
     spotifyAPI,
