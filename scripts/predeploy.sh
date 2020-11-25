@@ -1,4 +1,4 @@
 #!/bin/bash
 
-REACT_APP_ENV=prod react-scripts build
+npm run build:prod
 sudo cp -r ./build /var/www/lounge-webapp/build
