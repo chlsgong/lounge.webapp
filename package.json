@@ -32,7 +32,10 @@
     "build": "REACT_APP_ENV=dev react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy:prod": "REACT_APP_ENV=prod react-scripts build"
+    "predeploy": "./scripts/predeploy.sh",
+    "deploy": "./scripts/deploy.sh -r",
+    "deploy:initial": "./scripts/deploy.sh",
+    "check": "./scripts/check.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
