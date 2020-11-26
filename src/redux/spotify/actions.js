@@ -8,6 +8,7 @@ import {
   getSpotifyArtistAlbums,
   getSpotifyArtistTopTracks,
   getSpotifyAlbumTracks,
+  getRecentlyPlayed,
   getCurrentlyPlaying,
   postPrevious,
   postNext,
@@ -119,6 +120,22 @@ export const retrieveSpotifyAlbumTracks = createAsyncThunk(
     async accessToken => {
       try {
         const response = await getSpotifyAlbumTracks(accessToken, albumId);
+        return response.data;
+      }
+      catch(error) {
+        return thunkAPI.rejectWithValue(error.response.data);
+      }
+    },
+  ),
+);
+
+export const retrieveRecentlyPlayed = createAsyncThunk(
+  'spotify/retrieveRecentlyPlayed',
+  async (limit, thunkAPI) => await refreshIfNeeded(
+    thunkAPI,
+    async accessToken => {
+      try {
+        const response = await getRecentlyPlayed(accessToken, limit);
         return response.data;
       }
       catch(error) {

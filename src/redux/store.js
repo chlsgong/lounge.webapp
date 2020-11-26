@@ -13,6 +13,7 @@ import loginMiddleware from './login/middleware';
 import userMiddleware from './user/middleware';
 import loungeMiddleware from './lounge/middleware';
 import persistenceMiddleware from './persistence/middleware';
+import playerMiddleware from './player/middleware';
 
 const reducer = {
   login: loginSlice.reducer,
@@ -31,6 +32,7 @@ const middleware = [
   loginMiddleware,
   userMiddleware,
   loungeMiddleware,
+  playerMiddleware,
   // logger, // NOTE: must be the last middleware
 ];
 

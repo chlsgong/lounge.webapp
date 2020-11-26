@@ -18,6 +18,7 @@ const spotify = {
       me: '/v1/me',
       player: '/v1/me/player',
       queue: '/v1/me/player/queue',
+      recentlyPlayed: '/v1/me/player/recently-played',
       currentlyPlaying: '/v1/me/player/currently-playing',
       play: '/v1/me/player/play',
       pause: 'v1/me/player/pause',
@@ -39,7 +40,7 @@ export const getSpotifyAuthorize = spotifyState => {
     'response_type': 'code',
     'redirect_uri': config.spotify.REDIRECT_URI,
     'state': spotifyState,
-    'scope': ['streaming', 'user-read-email', 'user-read-private'].join(' '),
+    'scope': ['streaming', 'user-read-email', 'user-read-private', 'user-read-recently-played'].join(' '),
   }
   const url = spotify.accounts.url + spotify.accounts.authorize + createURLQuery(params);
 
@@ -197,6 +198,21 @@ export const getSpotifyAlbumTracks = (token, albumId) => {
         headers: getAuthHeader(token),
         params: {
           limit: '50', // TODO: should implement paging
+        },
+      },
+    },
+    spotifyAPI,
+  );
+};
+
+export const getRecentlyPlayed = (token, limit) => {
+  return createGetRequest(
+    {
+      url: spotify.api.v1.recentlyPlayed,
+      config: {
+        headers: getAuthHeader(token),
+        params: {
+          limit,
         },
       },
     },

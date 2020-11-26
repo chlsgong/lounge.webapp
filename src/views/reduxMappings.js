@@ -36,6 +36,7 @@ import {
   pause,
   playPrevious,
   playNext,
+  retrieveRecentlyPlayed,
 } from '../redux/spotify/actions';
 import { updatePlayer } from '../redux/player/extraActions';
 
@@ -81,4 +82,5 @@ export const mapDispatchToProps = dispatch => ({
   previousTrack: () => dispatch(playPrevious()),
   nextTrack: () => dispatch(playNext()),
   updatePlayerState: playerState => dispatch(updatePlayer(playerState)),
+  getRecentlyPlayedTrack: () => dispatch(retrieveRecentlyPlayed(1)),
 });

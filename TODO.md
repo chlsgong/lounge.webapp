@@ -3,7 +3,6 @@
 ## Features
 # Needed before deployment
 - Limit number of rooms to 2 per user
-- If using mobile, deep link to open spotify app for playback
 
 # 0: Critical
 - Refresh self signed certificates
@@ -12,6 +11,7 @@
 - React router dom
 - Debounce inputs
 - Implement paging in Spotify requests
+- Handle multiple instances
 
 # 1: High
 - Add QR code

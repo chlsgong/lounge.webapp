@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { retrieveCurrentlyPlaying, play, pause } from '../spotify/actions';
+import { retrieveRecentlyPlayed, retrieveCurrentlyPlaying, play, pause } from '../spotify/actions';
 
 // Player reducer
 
@@ -14,6 +14,7 @@ export const initialState = {
   },
   playing: false,
   isCurrentTrackEmpty: true,
+  weblink: '',
 };
 
 export const reducer = {
@@ -66,6 +67,15 @@ export const extraReducer = {
     return {
       ...state,
       playing: false,
+    };
+  },
+  [retrieveRecentlyPlayed.fulfilled]: (state, action) => {
+    const track = _.first(action.payload?.items)?.track;
+    const weblink = track?.external_urls?.spotify;
+
+    return {
+      ...state,
+      weblink,
     };
   },
 };

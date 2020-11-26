@@ -32,9 +32,8 @@ class LoungeRoom extends PureComponent {
   }
 
   componentWillUnmount() {
-    if (this.props.player.playing) {
+    if (this.player && this.props.isBrowser && this.props.player.playing) {
       this.player.togglePlay();
-      // TODO: don't update state
     }
   }
 
@@ -159,6 +158,10 @@ class LoungeRoom extends PureComponent {
     }
   }
 
+  onOpenSpotify = () => {
+    this.props.getRecentlyPlayedTrack();
+  }
+
   getPlayIcon = () => {
     const play = (
       <Play
@@ -188,6 +191,25 @@ class LoungeRoom extends PureComponent {
           width={0.25}
         >
           Close Lounge
+        </Button>
+      </Flex>
+    );
+  }
+
+  renderOpenSpotifyButton = () => {
+    if (this.props.isBrowser || !this.props.player.isCurrentTrackEmpty) return null;
+
+    return (
+      <Flex
+        justifyContent='center'
+        mt={3}
+      >
+        <Button
+          variant='secondary'
+          onClick={this.onOpenSpotify}
+          width={0.25}
+        >
+          Open Spotify
         </Button>
       </Flex>
     );
@@ -310,6 +332,7 @@ class LoungeRoom extends PureComponent {
         <Flex flexDirection='column'>
           {this.renderCloseRoomButton()}
           {this.renderLoungeCodeLabel()}
+          {this.renderOpenSpotifyButton()}
           {this.renderSpotifyPlayer()}
           <SpotifySearch
             onArtistSelected={this.onArtistSelected}
