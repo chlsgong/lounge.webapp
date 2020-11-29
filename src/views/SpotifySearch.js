@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
+import Modal from 'react-modal';
 import { Flex, Heading, Image, Button, Text } from 'rebass';
 import { Input } from '@rebass/forms';
 import { ThemeProvider } from 'emotion-theming'
@@ -14,6 +15,7 @@ class SpotifySearch extends PureComponent {
 
     this.state = {
       queryString: '',
+      isModalOpen: false,
     };
   }
 
@@ -31,6 +33,7 @@ class SpotifySearch extends PureComponent {
 
   onAddToQueue = uri => {
     this.props.addToQueue(uri);
+    this.setState({ isModalOpen: true });
   }
 
   onGoToArtist = id => {
@@ -340,6 +343,24 @@ class SpotifySearch extends PureComponent {
     );
   }
 
+  renderAddModal = () => {
+    return (
+      <Modal
+        className='modal'
+        isOpen={this.state.isModalOpen}
+        onAfterOpen={() => setTimeout(() => this.setState({ isModalOpen: false }), 2000)}
+      >
+        <Heading
+          variant='heading'
+          textAlign='center'
+          fontSize={4}
+        >
+          Song added to queue!
+        </Heading>
+      </Modal>
+    );
+  }
+
   render() {
     return (
       <ThemeProvider theme={preset}>
@@ -393,6 +414,7 @@ class SpotifySearch extends PureComponent {
             {this.renderAlbumSearchResults()}
           </Flex>
         </Flex>
+        {this.renderAddModal()}
       </ThemeProvider>
     );
   }

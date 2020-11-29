@@ -10,6 +10,7 @@ import Artist from './Artist';
 import Album from './Album';
 import SpotifySearch from './SpotifySearch';
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
+import './shared.css';
 import { TokenOwner } from '../constants';
 
 class LoungeRoom extends PureComponent {

@@ -39,6 +39,9 @@ const handleGetLoungeRoomSuccess = store => {
   store.dispatch(refreshSpotifyToken(TokenOwner.lounge));
 
   if (!isBrowser) {
+    // Initial pull
+    store.dispatch(retrieveCurrentlyPlaying());
+    // Set polling
     retrieveCurrentlyPlayingInterval = setInterval(() => store.dispatch(retrieveCurrentlyPlaying()), 8000);
   }
 

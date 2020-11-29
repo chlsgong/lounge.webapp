@@ -1,5 +1,10 @@
 import { selectPlayer } from './selectors';
-import { retrieveRecentlyPlayed } from '../spotify/actions';
+import {
+  retrieveRecentlyPlayed,
+  retrieveCurrentlyPlaying,
+  playPrevious,
+  playNext,
+} from '../spotify/actions';
 import { createActionMap } from '../../utils/redux';
 
 const handleRetrieveRecentlyPlayed = store => {
@@ -9,8 +14,14 @@ const handleRetrieveRecentlyPlayed = store => {
   window.location.href = weblink;
 };
 
+const handleSpotifyPlayerAction = store => {
+  store.dispatch(retrieveCurrentlyPlaying());
+};
+
 const actionMap = createActionMap({
-  [retrieveRecentlyPlayed.fulfilled]: handleRetrieveRecentlyPlayed, 
+  [retrieveRecentlyPlayed.fulfilled]: handleRetrieveRecentlyPlayed,
+  [playPrevious.fulfilled]: handleSpotifyPlayerAction,
+  [playNext.fulfilled]: handleSpotifyPlayerAction,
 });
 
 const playerMiddleware = store => next => action => {
