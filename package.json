@@ -28,7 +28,7 @@
     "uuid": "^8.3.1"
   },
   "scripts": {
-    "start:ssl": "REACT_APP_ENV=dev HTTPS=true SSL_CRT_FILE=./ssl/cert.pem SSL_KEY_FILE=./ssl/key.pem react-scripts start",
+    "start:ssl": "REACT_APP_ENV=dev HTTPS=true SSL_CRT_FILE=./ssl/loungemusic_app.crt SSL_KEY_FILE=./ssl/loungemusic_app.key react-scripts start",
     "start": "REACT_APP_ENV=dev react-scripts start",
     "build": "REACT_APP_ENV=dev react-scripts build",
     "build:prod": "REACT_APP_ENV=prod react-scripts build",

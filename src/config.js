@@ -12,10 +12,12 @@ const dev = {
 
 const prod = {
   server: {
-    URL: 'https://chlsgong.com:8443',
+    // URL: 'https://chlsgong.com:8443',
+    URL: 'https://loungemusic.app:8443',
   },
   spotify: {
-    REDIRECT_URI: 'https://chlsgong.com',
+    // REDIRECT_URI: 'https://chlsgong.com',
+    REDIRECT_URI: 'https://loungemusic.app',
     CLIENT_SECRET: '10f26b66944143449acf95adcc4074bb',
     CLIENT_ID: '16efad44cfd54e3ea050d602af68eadd',
   },
