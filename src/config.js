@@ -5,21 +5,19 @@ const dev = {
   spotify: {
     // REDIRECT_URI: 'http://localhost:3000', // Not secure
     REDIRECT_URI: 'https://localhost:3000',
-    CLIENT_SECRET: '10f26b66944143449acf95adcc4074bb',
-    CLIENT_ID: '16efad44cfd54e3ea050d602af68eadd',
+    CLIENT_SECRET: process.env.REACT_APP_SPOTIFY_SECRET,
+    CLIENT_ID: process.env.REACT_APP_SPOTIFY_ID,
   },
 };
 
 const prod = {
   server: {
-    // URL: 'https://chlsgong.com:8443',
     URL: 'https://loungemusic.app:8443',
   },
   spotify: {
-    // REDIRECT_URI: 'https://chlsgong.com',
     REDIRECT_URI: 'https://loungemusic.app',
-    CLIENT_SECRET: '10f26b66944143449acf95adcc4074bb',
-    CLIENT_ID: '16efad44cfd54e3ea050d602af68eadd',
+    CLIENT_SECRET: process.env.REACT_APP_SPOTIFY_SECRET,
+    CLIENT_ID: process.env.REACT_APP_SPOTIFY_ID,
   },
 };
 
