@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
-import { Flex, Heading, Button, Text } from 'rebass';
+import { Flex, Button, Text } from 'rebass';
 import { Input } from '@rebass/forms';
 import { ThemeProvider } from 'emotion-theming'
-import preset from '@rebass/preset'
+import defautTheme from '../themes/default';
 
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
 import LoungeRoom from './LoungeRoom';
 import Join from './Join';
+import Header from '../components/Header';
 
 class Home extends PureComponent {
   constructor(props) {
@@ -16,6 +17,7 @@ class Home extends PureComponent {
 
     this.state = {
       loungeName: '',
+      loungeCode: '',
       hasJoinedLounge: false,
       isJoinViewActive: false,
     };
@@ -65,9 +67,20 @@ class Home extends PureComponent {
     this.setState({ hasJoinedLounge: false });
   }
 
+  onJoinOtherLounge = () => {
+    const { loungeCode } = this.state;
+    this.props.joinLounge(loungeCode);
+    this.setState({ hasJoinedLounge: true });
+  }
+
   onLoungeNameChange = event => {
     const loungeName = event.target.value;
     this.setState({ loungeName });
+  }
+
+  onLoungeCodeChange = event => {
+    const loungeCode = event.target.value;
+    this.setState({ loungeCode });
   }
 
   renderLoungeButton = loungeId => {
@@ -153,6 +166,39 @@ class Home extends PureComponent {
     );
   }
 
+  renderLeftHeader = () => {
+    return (
+      <Flex>
+        <Button variant='header' onClick={this.onSearchLounge}>
+          Join a Lounge room
+        </Button>
+        <Button variant='header' onClick={this.props.logout}>
+          Logout
+        </Button>
+      </Flex>
+    );
+  }
+
+  renderCenterHeader = () => {
+    return (
+      <Flex width={1}>
+        <Input
+          id='code'
+          name='code'
+          type='text'
+          placeholder='Enter lounge code'
+          bg='white'
+          width={0.75}
+          textAlign='center'
+          onChange={this.onLoungeCodeChange}
+        />
+        <Button variant='header' onClick={this.onJoinOtherLounge}>
+          Join
+        </Button>
+      </Flex>
+    );
+  }
+
   render() {
     if (this.state.isJoinViewActive) {
       return (
@@ -167,30 +213,17 @@ class Home extends PureComponent {
     }
 
     return (
-      <ThemeProvider theme={preset}>
+      <ThemeProvider theme={defautTheme}>
         <Flex
           flexDirection='column'
           alignItems='center'
+          bg='dark'
         >
-          <Flex
-            alignSelf='stretch'
-            mb={3}
-          >
-            <Button onClick={this.onSearchLounge}>
-              Join a Lounge room
-            </Button>
-            <Button onClick={this.props.logout}>
-              Logout
-            </Button>
-          </Flex>
-          <Heading
-            textAlign='center'
-            variant='display'
-            py={5}
-          >
-            My Lounges
-          </Heading>
-          <Input
+          <Header
+            left={this.renderLeftHeader()}
+            center={this.renderCenterHeader()}
+          />
+          {/* <Input
             id='loungeName'
             name='loungeName'
             type='text'
@@ -205,14 +238,14 @@ class Home extends PureComponent {
             width={0.25}
             sx={{
               ':hover': {
-                ...preset.buttons.primary,
+                ...defautTheme.buttons.primary,
               }
             }}
             variant='secondary'
             onClick={this.onCreateLoungeButtonClick}
           >
             Create new lounge
-          </Button>
+          </Button> */}
           <Flex
             flexDirection='column'
             alignItems='stretch'

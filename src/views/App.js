@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { Button, Flex, Heading } from 'rebass';
 import { ThemeProvider } from 'emotion-theming'
-import preset from '@rebass/preset'
+// import preset from '@rebass/preset'
+import defautTheme from '../themes/default';
 
 import { mapStateToProps, mapDispatchToProps } from './reduxMappings';
 
@@ -41,14 +42,14 @@ class App extends PureComponent {
     }
 
     return (
-      <ThemeProvider theme={preset}>
+      <ThemeProvider theme={defautTheme}>
         <Flex
           flexDirection='column'
           alignItems='center'
         >
           <Heading
             variant='display'
-            p={5}
+            p={7}
           >
             Lounge
           </Heading>
@@ -61,10 +62,11 @@ class App extends PureComponent {
               my={2}
               sx={{
                 ':hover': {
-                  ...preset.buttons.primary,
+                  ...defautTheme.buttons.primary,
                 }
               }}
               variant='secondary'
+              bg='spotify'
               onClick={this.onLoginWithSpotify}
             >
               Login with Spotify
@@ -73,7 +75,7 @@ class App extends PureComponent {
               my={2}
               sx={{
                 ':hover': {
-                  ...preset.buttons.primary,
+                  ...defautTheme.buttons.primary,
                 }
               }}
               variant='secondary'

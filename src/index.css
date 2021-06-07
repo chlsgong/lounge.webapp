@@ -1,9 +1,16 @@
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  background-color: #07c;
+  background: hsla(263, 60%, 48%, 1);
+  background: linear-gradient(to bottom, hsla(263, 60%, 48%, 0.9) 0%, hsla(194, 73%, 59%, 0.8) 67%, hsla(163, 100%, 75%, 1) 100%);
+  background: -moz-linear-gradient(to bottom, hsla(263, 60%, 48%, 0.9) 0%, hsla(194, 73%, 59%, 0.8) 67%, hsla(163, 100%, 75%, 1) 100%);
+  background: -webkit-linear-gradient(to bottom, hsla(263, 60%, 48%, 0.9) 0%, hsla(194, 73%, 59%, 0.8) 67%, hsla(163, 100%, 75%, 1) 100%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
